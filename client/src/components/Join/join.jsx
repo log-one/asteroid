@@ -1,6 +1,8 @@
 import React, { Component, useState } from "react";
 import { Link } from "react-router-dom";
 
+import "./join.css";
+
 const Join = () => {
   //add state variables
   const [name, setName] = useState("");
@@ -13,7 +15,7 @@ const Join = () => {
         <h1 className="heading">Join</h1>
         <div>
           <input
-            placeholder=""
+            placeholder="User"
             className="joinInput"
             type="text"
             onChange={event => setName(event.target.value)}
@@ -21,7 +23,7 @@ const Join = () => {
         </div>
         <div>
           <input
-            placeholder=""
+            placeholder="Room"
             className="joinInput mt-20"
             type="text"
             onChange={event => setRoom(event.target.value)}
