@@ -5,10 +5,12 @@ import io from "socket.io-client";
 import "./chat.css";
 
 let socket;
-//the location prop comes from React-Router
+//the location prop comes from React-Router in App.js
 const Chat = ({ location }) => {
   const [name, setName] = useState("");
   const [room, setRoom] = useState("");
+  const [messages, setMessages] = useState(""); //array of all messages
+  const [message, setMessage] = useState(""); // each message
   const ENDPOINT = "localhost:5000";
 
   useEffect(() => {
@@ -17,7 +19,7 @@ const Chat = ({ location }) => {
     const { name, room } = queryString.parse(location.search);
 
     //create a socket object on the client side
-    socket = io(ENDPOINT);
+    socket = io(ENDPOINT); //emits a 'connection' event to ENDPOINT?
     //this socket object is connected to the socket object on the server side through the endpoint URL
 
     setName(name);
@@ -40,6 +42,14 @@ const Chat = ({ location }) => {
     console.log(socket);
   }, [ENDPOINT, location.search]);
 
+  useEffect(() => {
+    socket.on("message", message => {
+      setMessages(...messages, message);
+    });
+  }, [messages]);
+
+  //now we need to create a function for sending messages
+  //and then add a bunch of components/JSX below to render a proper look Chat component
   return <h1>chat</h1>;
 };
 
