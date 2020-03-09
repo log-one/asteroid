@@ -1,6 +1,7 @@
 import React, { Component, useState, useEffect } from "react";
 import queryString from "query-string";
 import io from "socket.io-client";
+import InfoBar from "../InfoBar/InfoBar";
 
 import "./chat.css";
 
@@ -69,6 +70,7 @@ const Chat = ({ location }) => {
   return (
     <div className="outerContainer">
       <div className="container">
+        <InfoBar room={room} />
         <input
           value={message} //this makes the input field empty again when the 'message' state becomes an empty string every time a message is sent
           onChange={e => setMessage(e.target.value)}
