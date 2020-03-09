@@ -19,7 +19,7 @@ const Chat = ({ location }) => {
     const { name, room } = queryString.parse(location.search);
 
     //create a socket object on the client side
-    socket = io(ENDPOINT); //emits a 'connection' event to ENDPOINT?
+    socket = io(ENDPOINT); //emits a 'connection' event to ENDPOINT along with 'socket' object?
     //this socket object is connected to the socket object on the server side through the endpoint URL
 
     setName(name);
@@ -39,18 +39,44 @@ const Chat = ({ location }) => {
       socket.off();
     };
 
-    console.log(socket);
+    //console.log(socket);
   }, [ENDPOINT, location.search]);
 
+  //By the end of the execution of the first useEffect, a user would've been added to the Users[] in the backend and
+  //a 'message' event would've been sent by {user: 'admin'}, welcoming the new user.
+
+  //the next useEffect() handles the 'message' event and updates the Messages[] state of the Chat component
   useEffect(() => {
     socket.on("message", message => {
-      setMessages(...messages, message);
+      setMessages([...messages, message]); //this is adding every new message sent by admin or anyone else to our messages array
     });
   }, [messages]);
 
-  //now we need to create a function for sending messages
-  //and then add a bunch of components/JSX below to render a proper look Chat component
-  return <h1>chat</h1>;
+  //create a function to send messages (once a message is typed and entered in the chatbox)
+
+  const sendMessage = event => {
+    event.preventDefault(); //clicking a button or onKeyPress refreshes the whole page. This prevents that default behaviour from happening
+
+    if (message) {
+      socket.emit("sendMessage", message, () => setMessage("")); //the callback function resets the message state to an empty string
+    }
+  };
+
+  console.log("MSG: ", message);
+  console.log("MSGSS: ", messages);
+
+  //and then add a bunch of components/JSX below to render a proper looking Chat component
+  return (
+    <div className="outerContainer">
+      <div className="container">
+        <input
+          value={message} //this makes the input field empty again when the 'message' state becomes an empty string every time a message is sent
+          onChange={e => setMessage(e.target.value)}
+          onKeyPress={e => (e.key === "Enter" ? sendMessage(e) : null)}
+        />
+      </div>
+    </div>
+  );
 };
 
 export default Chat;

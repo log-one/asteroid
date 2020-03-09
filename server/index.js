@@ -21,11 +21,13 @@ io.on("connection", socket => {
       id: socket.id,
       name: joinData.name,
       room: joinData.room
-    }); //add user returns either a error object or user object
+    }); //addUser() returns either a error object or user object
 
     //a callback function can be passed in along with the data
     //this callback can be executed after something has been done with the data
-    if (error) return callback(error);
+    if (error) {
+      return callback(error);
+    }
 
     //here we emit an event from the backend to the frontend
     socket.emit("message", {
@@ -42,10 +44,11 @@ io.on("connection", socket => {
     //socket.join() is a built in function that joins a user into a room
     socket.join(user.room);
 
-    callback();
+    //callback();
   });
 
   //handling an event recieved by the backend from the frontend
+  //'sendMessage' event is for user generated messages
   socket.on("sendMessage", (message, callback) => {
     const user = getUser(socket.id);
 
