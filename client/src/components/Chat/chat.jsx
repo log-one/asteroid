@@ -3,6 +3,7 @@ import queryString from "query-string";
 import io from "socket.io-client";
 import InfoBar from "../InfoBar/InfoBar";
 import InputBar from "../InputBar/InputBar";
+import Messages from "../Messages/Messages";
 
 import "./chat.css";
 
@@ -11,7 +12,7 @@ let socket;
 const Chat = ({ location }) => {
   const [name, setName] = useState("");
   const [room, setRoom] = useState("");
-  const [messages, setMessages] = useState(""); //array of all messages
+  const [messages, setMessages] = useState([]); //array of all messages
   const [message, setMessage] = useState(""); // each message
   const ENDPOINT = "localhost:5000";
 
@@ -31,8 +32,8 @@ const Chat = ({ location }) => {
     //the server upon recognizing the emitted event can access the emitted data (if any) and do something
     //a callback function can be passed in the server as the second parameter of the event listener
     //we can define that callback function here to do something after the event has been emitted (ex: to do error handling)
-    socket.emit("join", { name, room }, error => {
-      alert(error.error);
+    socket.emit("join", { name, room }, e => {
+      alert(e);
     });
 
     //describe what needs to be done as the component unmounts
@@ -72,6 +73,7 @@ const Chat = ({ location }) => {
     <div className="outerContainer">
       <div className="container">
         <InfoBar room={room} />
+        <Messages messages={messages} name={name} />
         <InputBar
           message={message}
           setMessage={setMessage}

@@ -26,6 +26,7 @@ io.on("connection", socket => {
     //a callback function can be passed in along with the data
     //this callback can be executed after something has been done with the data
     if (error) {
+      console.log("Error", error, "User", user);
       return callback(error);
     }
 
@@ -58,7 +59,14 @@ io.on("connection", socket => {
   });
 
   socket.on("disconnect", () => {
-    console.log("User just left!!!");
+    //we remove our user right here so that the admin sends a welcome message when the user refreshes the page: console.log("User just left!!!");
+    const user = removeUser(socket.id);
+    if (user) {
+      io.to(user.room).emit("message", {
+        user: "admin",
+        text: `${user.name} has left`
+      });
+    }
   });
 });
 
