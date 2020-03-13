@@ -45,6 +45,12 @@ io.on("connection", socket => {
     //socket.join() is a built in function that joins a user into a room
     socket.join(user.room);
 
+    //send an object with data about the list of users online in the room
+    io.to(user.room).emit("roomData", {
+      room: user.room,
+      users: getUsersInRoom(user.room)
+    });
+
     //callback();
   });
 
@@ -54,7 +60,10 @@ io.on("connection", socket => {
     const user = getUser(socket.id);
 
     io.to(user.room).emit("message", { user: user.name, text: message });
-
+    // io.to(user.room).emit("roomData", {
+    //   room: user.room,
+    //   users: getUsersInRoom(user.room)
+    // });
     callback(); //to do something after the message is sent
   });
 
@@ -65,6 +74,11 @@ io.on("connection", socket => {
       io.to(user.room).emit("message", {
         user: "admin",
         text: `${user.name} has left`
+      });
+
+      io.to(user.room).emit("roomData", {
+        room: user.room,
+        users: getUsersInRoom(user.room)
       });
     }
   });
