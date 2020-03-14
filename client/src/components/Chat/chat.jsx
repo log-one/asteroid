@@ -14,6 +14,7 @@ const Chat = ({ location }) => {
   const [room, setRoom] = useState("");
   const [messages, setMessages] = useState([]); //array of all messages
   const [message, setMessage] = useState(""); // each message
+  const [users, setUsers] = useState([]); //array of users in room
   const ENDPOINT = "localhost:5000";
 
   useEffect(() => {
@@ -55,6 +56,13 @@ const Chat = ({ location }) => {
     });
   }, [messages]);
 
+  //this useEffect() updates data about users in room
+  useEffect(() => {
+    socket.on("roomData", ({ users }) => {
+      setUsers(users); //updates state of users with data recieved from getUsersInRoom() from server
+    });
+  }, [users]);
+
   //create a function to send messages (once a message is typed and entered in the chatbox)
 
   const sendMessage = event => {
@@ -65,14 +73,14 @@ const Chat = ({ location }) => {
     }
   };
 
-  console.log("MSG: ", message);
-  console.log("MSGSS: ", messages);
+  // console.log("MSG: ", message);
+  // console.log("MSGSS: ", messages);
 
   //and then add a bunch of components/JSX below to render a proper looking Chat component
   return (
     <div className="outerContainer">
       <div className="container">
-        <InfoBar room={room} />
+        <InfoBar room={room} users={users} />
         <Messages messages={messages} name={name} />
         <InputBar
           message={message}
