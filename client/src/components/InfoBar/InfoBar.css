@@ -23,6 +23,11 @@
   margin-right: 5%;
 }
 
+.numUsers {
+  color: rgb(0, 255, 85);
+  margin-right: 7px;
+}
+
 .onlineIcon {
   margin-right: 5%;
 }

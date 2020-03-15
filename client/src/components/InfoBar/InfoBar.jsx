@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { slide as Menu } from "react-burger-menu";
 
 import "./InfoBar.css";
 import closeIcon from "../../icons/closeIcon.png";
@@ -8,10 +7,12 @@ import onlineIcon from "../../icons/onlineIcon.png";
 const InfoBar = props => {
   return (
     <div className="infoBar">
-      <div className="leftInnerContainer">
-        <img className="onlineIcon" src={onlineIcon} alt="online" />
+      <div
+        className="leftInnerContainer"
+        onClick={event => props.toggleSideBar(event)}
+      >
+        <h3 className="numUsers">{`(${props.users.length}) `}</h3>
         <h3>{props.room}</h3>
-        <h5 className="roomData">{`${props.users.length} users online`}</h5>
       </div>
       <div className="rightInnerContainer">
         <a href="/">

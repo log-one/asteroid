@@ -1,0 +1,43 @@
+.side-bar-container {
+  display: flex;
+  position: absolute;
+  top: 60px;
+  height: calc(100% - 60px);
+  width: 100%;
+  overflow: auto;
+  z-index: 190;
+}
+
+.side-bar {
+  background-color: rgb(27, 27, 27);
+  height: 100%;
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.side-bar ul {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 0;
+  margin: 0.4em;
+  list-style-type: none;
+  color: white;
+}
+
+.side-bar h3 {
+  color: rgb(58, 255, 124);
+}
+
+.side-bar li {
+  background: url(../../icons/onlineIcon.png) 0px 9px no-repeat;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-weight: 300;
+  font-size: 1.2em;
+  margin-top: 0.8em;
+  margin-right: 1.2em;
+  padding-left: 0.6em;
+}

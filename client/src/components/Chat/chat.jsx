@@ -4,6 +4,7 @@ import io from "socket.io-client";
 import InfoBar from "../InfoBar/InfoBar";
 import InputBar from "../InputBar/InputBar";
 import Messages from "../Messages/Messages";
+import SideBar from "../SideBar/SideBar";
 
 import "./chat.css";
 
@@ -15,6 +16,7 @@ const Chat = ({ location }) => {
   const [messages, setMessages] = useState([]); //array of all messages
   const [message, setMessage] = useState(""); // each message
   const [users, setUsers] = useState([]); //array of users in room
+  const [sideBarOpen, setSideBarOpen] = useState(false);
   const ENDPOINT = "localhost:5000";
 
   useEffect(() => {
@@ -56,7 +58,7 @@ const Chat = ({ location }) => {
     });
   }, [messages]);
 
-  //this useEffect() updates data about users in room
+  //this useEffect() updates data about users in room and re-renders sidebar
   useEffect(() => {
     socket.on("roomData", ({ users }) => {
       setUsers(users); //updates state of users with data recieved from getUsersInRoom() from server
@@ -64,6 +66,11 @@ const Chat = ({ location }) => {
   }, [users]);
 
   //create a function to send messages (once a message is typed and entered in the chatbox)
+
+  const toggleSideBar = event => {
+    event.preventDefault();
+    setSideBarOpen(!sideBarOpen);
+  };
 
   const sendMessage = event => {
     event.preventDefault(); //clicking a button or onKeyPress refreshes the whole page. This prevents that default behaviour from happening
@@ -80,7 +87,12 @@ const Chat = ({ location }) => {
   return (
     <div className="outerContainer">
       <div className="container">
-        <InfoBar room={room} users={users} />
+        <InfoBar room={room} users={users} toggleSideBar={toggleSideBar} />
+        <SideBar
+          sideBarOpen={sideBarOpen}
+          toggleSideBar={toggleSideBar}
+          users={users}
+        />
         <Messages messages={messages} name={name} />
         <InputBar
           message={message}
