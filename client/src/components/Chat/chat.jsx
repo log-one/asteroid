@@ -80,8 +80,10 @@ const Chat = ({ location }) => {
     }
   };
 
-  // console.log("MSG: ", message);
-  // console.log("MSGSS: ", messages);
+  const setInputPattern = () => {
+    let pattern = "[a-z0-9]{2,100}";
+    return pattern;
+  };
 
   //and then add a bunch of components/JSX below to render a proper looking Chat component
   return (
@@ -95,6 +97,7 @@ const Chat = ({ location }) => {
         />
         <Messages messages={messages} name={name} />
         <InputBar
+          pattern={setInputPattern()}
           message={message}
           setMessage={setMessage}
           sendMessage={sendMessage}
