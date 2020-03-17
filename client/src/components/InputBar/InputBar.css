@@ -11,6 +11,10 @@
   font-size: 1.2em;
 }
 
+input:invalid {
+  background-color: rgb(255, 44, 55);
+}
+
 input:focus,
 textarea:focus,
 select:focus {

@@ -10,6 +10,8 @@ const InputBar = ({ message, setMessage, sendMessage }) => {
         className="input"
         type="text"
         placeholder="Type a message..."
+        maxLength={100}
+        minLength={2}
         value={message} //this makes the input field empty again when the 'message' state becomes an empty string every time a message is sent
         onChange={e => setMessage(e.target.value)}
         onKeyPress={e => (e.key === "Enter" ? sendMessage(e) : null)}
