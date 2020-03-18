@@ -81,7 +81,8 @@ const Chat = ({ location }) => {
   };
 
   const setInputPattern = () => {
-    let pattern = "[a-z0-9]{2,100}";
+    let pattern =
+      "((^[a-z0-9][a-z0-9]( [a-z0-9]+)*$))|(^[a-z0-9][a-z0-9]?( [a-z0-9]+)+$)";
     return pattern;
   };
 
