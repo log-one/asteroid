@@ -32,7 +32,7 @@ io.on("connection", socket => {
 
     //here we emit an event from the backend to the frontend
     socket.emit("message", {
-      user: "admin",
+      user: "Admin",
       text: `${user.name}, welcome to the room ${user.room}`
     });
 
@@ -40,7 +40,7 @@ io.on("connection", socket => {
     //again we emit an event from the backend to the frontend
     socket.broadcast
       .to(user.room)
-      .emit("message", { user: "admin", text: `${user.name} has joined!` });
+      .emit("message", { user: "Admin", text: `${user.name} has joined!` });
 
     //socket.join() is a built in function that joins a user into a room
     socket.join(user.room);
@@ -56,14 +56,10 @@ io.on("connection", socket => {
 
   //handling an event recieved by the backend from the frontend
   //'sendMessage' event is for user generated messages
-  socket.on("sendMessage", (message, callback) => {
+  socket.on("sendMessage", (text, callback) => {
     const user = getUser(socket.id);
 
-    io.to(user.room).emit("message", { user: user.name, text: message });
-    // io.to(user.room).emit("roomData", {
-    //   room: user.room,
-    //   users: getUsersInRoom(user.room)
-    // });
+    io.to(user.room).emit("message", { user, text });
     callback(); //to do something after the message is sent
   });
 
@@ -72,7 +68,7 @@ io.on("connection", socket => {
     const user = removeUser(socket.id);
     if (user) {
       io.to(user.room).emit("message", {
-        user: "admin",
+        user: "Admin",
         text: `${user.name} has left`
       });
 

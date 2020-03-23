@@ -17,9 +17,16 @@ const Chat = ({ location }) => {
   const [message, setMessage] = useState(""); // each message
   const [users, setUsers] = useState([]); //array of users in room
   const [sideBarOpen, setSideBarOpen] = useState(false);
+  const [canSpeak, setCanSpeak] = useState({
+    eligible: true,
+    messageNum: 0
+  });
   const ENDPOINT = "localhost:5000";
 
+  console.log("Another State Declaration");
+
   useEffect(() => {
+    console.log("JOIN (first) useEffect()");
     //location.search contains just the query part of the URL
     //queryString.parse() parses it into an object with the query string parameters and values as key-value pairs
     const { name, room } = queryString.parse(location.search);
@@ -28,7 +35,7 @@ const Chat = ({ location }) => {
     socket = io(ENDPOINT); //emits a 'connection' event to ENDPOINT along with 'socket' object?
     //this socket object is connected to the socket object on the server side through the endpoint URL
 
-    setName(name);
+    setName(name.trim().toLowerCase());
     setRoom(room);
 
     //socket.emit() allows us to emit an event to the server and have some data passed along with it
@@ -38,6 +45,8 @@ const Chat = ({ location }) => {
     socket.emit("join", { name, room }, e => {
       alert(e);
     });
+
+    console.log("EMITED JOIN (1st EFFECT");
 
     //describe what needs to be done as the component unmounts
     return () => {
@@ -51,19 +60,36 @@ const Chat = ({ location }) => {
   //By the end of the execution of the first useEffect, a user would've been added to the Users[] in the backend and
   //a 'message' event would've been sent by {user: 'admin'}, welcoming the new user.
 
-  //the next useEffect() handles the 'message' event and updates the Messages[] state of the Chat component
-  useEffect(() => {
-    socket.on("message", message => {
-      setMessages([...messages, message]); //this is adding every new message sent by admin or anyone else to our messages array
-    });
-  }, [messages]);
-
   //this useEffect() updates data about users in room and re-renders sidebar
   useEffect(() => {
+    console.log("ROOMDATA (SECOND) useEffect()");
     socket.on("roomData", ({ users }) => {
       setUsers(users); //updates state of users with data recieved from getUsersInRoom() from server
+      console.log("UPDATED USERS (2nd EFFECT", users);
     });
   }, [users]);
+
+  //the next useEffect() handles the 'message' event and updates the Messages[] state of the Chat component
+  useEffect(() => {
+    console.log("MESSAGE (THIRD) useEffect()");
+    socket.on("message", message => {
+      setMessages([...messages, message]); //this is adding every new message sent by admin or anyone else to our messages array
+      console.log("UPDATED MSGS (3rd EFFECT");
+      //convert lat er to promises or async await
+    });
+
+    console.log("USERWAS STOPPED AT MESSAGE NUM: ", canSpeak.messageNum);
+
+    // let messagesSince;
+    // if (canSpeak.messageNum > 0) {
+    //   messagesSince = messages.length - canSpeak.messageNum;
+    //   if (canSpeak.eligible === false && messagesSince === 2) {
+    //     setCanSpeak({ eligible: true, messageNum: 0 });
+    //   }
+    // }
+
+    // console.log("MESSAGES SINCE USER STOPPED: ", messagesSince);
+  }, [messages]);
 
   //create a function to send messages (once a message is typed and entered in the chatbox)
 
@@ -77,10 +103,15 @@ const Chat = ({ location }) => {
 
     if (message) {
       socket.emit("sendMessage", message, () => setMessage("")); //the callback function resets the message state to an empty string
+
+      // setCanSpeak({ eligible: false, messageNum: messages.length + 1 });
     }
   };
 
+  console.log("MIDDLE");
+
   const setInputPattern = () => {
+    //pattern will be updated soon
     let pattern =
       "((^[a-z0-9][a-z0-9]( [a-z0-9]+)*$))|(^[a-z0-9][a-z0-9]?( [a-z0-9]+)+$)";
     return pattern;
@@ -89,6 +120,7 @@ const Chat = ({ location }) => {
   //and then add a bunch of components/JSX below to render a proper looking Chat component
   return (
     <div className="outerContainer">
+      {console.log("RENDER COMP (FOURTH) func")}
       <div className="container">
         <InfoBar room={room} users={users} toggleSideBar={toggleSideBar} />
         <SideBar
@@ -96,12 +128,19 @@ const Chat = ({ location }) => {
           toggleSideBar={toggleSideBar}
           users={users}
         />
-        <Messages messages={messages} name={name} />
+        <Messages
+          messages={messages}
+          name={name}
+          setCanSpeak={setCanSpeak}
+          canSpeak={canSpeak}
+        />
         <InputBar
           pattern={setInputPattern()}
           message={message}
+          name={name}
           setMessage={setMessage}
           sendMessage={sendMessage}
+          canSpeak={canSpeak}
         />
       </div>
     </div>
