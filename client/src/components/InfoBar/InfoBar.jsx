@@ -1,15 +1,14 @@
-import React, { Component } from "react";
+import React from "react";
 
 import "./InfoBar.css";
 import closeIcon from "../../icons/closeIcon.png";
-import onlineIcon from "../../icons/onlineIcon.png";
 
-const InfoBar = props => {
+const InfoBar = (props) => {
   return (
     <div className="infoBar">
       <div
         className="leftInnerContainer"
-        onClick={event => props.toggleSideBar(event)}
+        onClick={(event) => props.toggleSideBar(event)}
       >
         <h3 className="numUsers">{`(${props.users.length}) `}</h3>
         <h3>{props.room}</h3>

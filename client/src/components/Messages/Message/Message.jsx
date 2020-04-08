@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import ReactEmoji from "react-emoji";
 
 import "./Message.css";
@@ -7,9 +7,10 @@ const Message = ({ message: { user, text }, name }) => {
   //logic which determines what kind of Message component is rendered
   let isSentByCurrentUser = false;
 
-  if (user === name) {
+  if (user.name === name) {
     isSentByCurrentUser = true;
   }
+
   return isSentByCurrentUser ? (
     <div className="messageContainer justifyEnd">
       <p className="sentText pr-10">{user.name}</p>
