@@ -10,17 +10,17 @@ const router = require("./router");
 
 const app = express();
 const server = http.createServer(app);
-const io = socketio(server); //now we have a socket.io object that can do a lot of stuff
+const io = socketio(server); //now we have an instance of the socket.io server can do a lot of stuff
 
-const { addUser, removeUser, getUser, getUsersInRoom } = require("./users.jsx");
+const { addUser, removeUser, getUser, getUsersInRoom } = require("./users.js");
 
 //The disconnect function inside of the io.on() because we are managing that particular socket that was connected.
-io.on("connection", socket => {
+io.on("connection", (socket) => {
   socket.on("join", (joinData, callback) => {
     const { error, user } = addUser({
       id: socket.id,
       name: joinData.name,
-      room: joinData.room
+      room: joinData.room,
     }); //addUser() returns either a error object or user object
 
     //a callback function can be passed in along with the data
@@ -30,10 +30,19 @@ io.on("connection", socket => {
       return callback(error);
     }
 
+    //socket.join() is a built in function that joins a user into a room
+    socket.join(user.room);
+
+    //send an object with data about the list of users online in the room
+    io.to(user.room).emit("roomData", {
+      room: user.room,
+      users: getUsersInRoom(user.room),
+    });
+
     //here we emit an event from the backend to the frontend
     socket.emit("message", {
       user: "Admin",
-      text: `${user.name}, welcome to the room ${user.room}`
+      text: `${user.name}, welcome to the room ${user.room}`,
     });
 
     //socket.broadcast is going to send a message to everyone besides that specific user
@@ -42,15 +51,6 @@ io.on("connection", socket => {
       .to(user.room)
       .emit("message", { user: "Admin", text: `${user.name} has joined!` });
 
-    //socket.join() is a built in function that joins a user into a room
-    socket.join(user.room);
-
-    //send an object with data about the list of users online in the room
-    io.to(user.room).emit("roomData", {
-      room: user.room,
-      users: getUsersInRoom(user.room)
-    });
-
     //callback();
   });
 
@@ -58,9 +58,17 @@ io.on("connection", socket => {
   //'sendMessage' event is for user generated messages
   socket.on("sendMessage", (text, callback) => {
     const user = getUser(socket.id);
-
-    io.to(user.room).emit("message", { user, text });
-    callback(); //to do something after the message is sent
+    if (user) {
+      const messageREGEX = /(^[ a-z0-9]{2,100}$)|(^<3$)/;
+      if (messageREGEX.test(text))
+        io.to(user.room).emit("message", { user, text });
+      else {
+        text = "i apologize for trying to break the rules.";
+        io.to(user.room).emit("message", { user, text });
+        //Need to kick user out as well. INCOMPLETE
+      }
+      callback(); //to do something after the message is sent
+    }
   });
 
   socket.on("disconnect", () => {
@@ -69,12 +77,12 @@ io.on("connection", socket => {
     if (user) {
       io.to(user.room).emit("message", {
         user: "Admin",
-        text: `${user.name} has left`
+        text: `${user.name} has left`,
       });
 
       io.to(user.room).emit("roomData", {
         room: user.room,
-        users: getUsersInRoom(user.room)
+        users: getUsersInRoom(user.room),
       });
     }
   });
