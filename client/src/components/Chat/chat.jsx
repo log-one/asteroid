@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import queryString from "query-string";
 import io from "socket.io-client";
 import InfoBar from "../InfoBar/InfoBar";
@@ -14,12 +14,13 @@ const Chat = ({ location }) => {
   const [name, setName] = useState("");
   const [room, setRoom] = useState("");
   const [messages, setMessages] = useState([]); //array of all messages
+  //above array of messages should be in a DB
   const [message, setMessage] = useState(""); // each message
   const [users, setUsers] = useState([]); //array of users in room
   const [sideBarOpen, setSideBarOpen] = useState(false);
   const [canSpeak, setCanSpeak] = useState({
     eligible: true,
-    messageNum: 0
+    messageNum: 0,
   });
   const ENDPOINT = "localhost:5000";
 
@@ -42,7 +43,7 @@ const Chat = ({ location }) => {
     //the server upon recognizing the emitted event can access the emitted data (if any) and do something
     //a callback function can be passed in the server as the second parameter of the event listener
     //we can define that callback function here to do something after the event has been emitted (ex: to do error handling)
-    socket.emit("join", { name, room }, e => {
+    socket.emit("join", { name, room }, (e) => {
       alert(e);
     });
 
@@ -64,58 +65,59 @@ const Chat = ({ location }) => {
   useEffect(() => {
     console.log("ROOMDATA (SECOND) useEffect()");
     socket.on("roomData", ({ users }) => {
+      console.log("UPDATINGGGG USERS (2nd EFFECT", users);
       setUsers(users); //updates state of users with data recieved from getUsersInRoom() from server
       console.log("UPDATED USERS (2nd EFFECT", users);
     });
+
+    return () => {
+      socket.off("roomData");
+    };
   }, [users]);
 
   //the next useEffect() handles the 'message' event and updates the Messages[] state of the Chat component
   useEffect(() => {
     console.log("MESSAGE (THIRD) useEffect()");
-    socket.on("message", message => {
+    socket.on("message", (message) => {
+      console.log("UPDATINGGGGG MSGS");
       setMessages([...messages, message]); //this is adding every new message sent by admin or anyone else to our messages array
       console.log("UPDATED MSGS (3rd EFFECT");
-      //convert lat er to promises or async await
+      //convert later to promises or async await
     });
 
-    console.log("USERWAS STOPPED AT MESSAGE NUM: ", canSpeak.messageNum);
+    //turn-based conversation logic
+    let messagesSince;
+    //after new message from another user is rendered calculate how many messages have passed since the current user last spoke
+    messagesSince = messages.length - canSpeak.messageNum;
+    //decide when to allow users to speak
+    if (users.length === 2 && messagesSince === 1)
+      setCanSpeak({ eligible: true, messageNum: 0 });
+    if (users.length > 2 && messagesSince === 2)
+      setCanSpeak({ eligible: true, messageNum: 0 });
 
-    // let messagesSince;
-    // if (canSpeak.messageNum > 0) {
-    //   messagesSince = messages.length - canSpeak.messageNum;
-    //   if (canSpeak.eligible === false && messagesSince === 2) {
-    //     setCanSpeak({ eligible: true, messageNum: 0 });
-    //   }
-    // }
-
-    // console.log("MESSAGES SINCE USER STOPPED: ", messagesSince);
+    return () => {
+      socket.off("message");
+    };
   }, [messages]);
 
-  //create a function to send messages (once a message is typed and entered in the chatbox)
-
-  const toggleSideBar = event => {
+  //function to toggle sidebar
+  const toggleSideBar = (event) => {
     event.preventDefault();
     setSideBarOpen(!sideBarOpen);
   };
 
-  const sendMessage = event => {
+  //create a function to send messages (once a message is typed and entered in the chatbox)
+  const sendMessage = (event) => {
     event.preventDefault(); //clicking a button or onKeyPress refreshes the whole page. This prevents that default behaviour from happening
 
     if (message) {
       socket.emit("sendMessage", message, () => setMessage("")); //the callback function resets the message state to an empty string
 
-      // setCanSpeak({ eligible: false, messageNum: messages.length + 1 });
+      setCanSpeak({ eligible: false, messageNum: messages.length + 1 }); //when user speaks, note what number his message is in the list of all messages
     }
   };
 
   console.log("MIDDLE");
-
-  const setInputPattern = () => {
-    //pattern will be updated soon
-    let pattern =
-      "((^[a-z0-9][a-z0-9]( [a-z0-9]+)*$))|(^[a-z0-9][a-z0-9]?( [a-z0-9]+)+$)";
-    return pattern;
-  };
 
   //and then add a bunch of components/JSX below to render a proper looking Chat component
   return (
@@ -128,14 +130,9 @@ const Chat = ({ location }) => {
           toggleSideBar={toggleSideBar}
           users={users}
         />
-        <Messages
-          messages={messages}
-          name={name}
-          setCanSpeak={setCanSpeak}
-          canSpeak={canSpeak}
-        />
+        <Messages messages={messages} name={name} />
         <InputBar
-          pattern={setInputPattern()}
+          pattern={"(^[ a-z0-9]{2,100}$)|(^<3$)"}
           message={message}
           name={name}
           setMessage={setMessage}
