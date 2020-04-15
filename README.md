@@ -14,7 +14,7 @@ Chat apps can be boring because the users usually have to do all the work of kee
 ### Features:
 Chit is a chat environment with certain rules, easter egg-like functions and an interesting aesthetic. Some of the features include:
   * Users speak according to a turn-based system. After sending a message (depending on the number of users) the user must sit back and wait for one or more other users to speak before he can speak again.
-  * There is a window of time within which a user must send a message when it is their turn to speak. When the built-in timer reaches zero, they lose their ability to speak.
+  * There is a window of time within which a user must send a message when it is their turn to speak. When the built-in timer reaches zero, the window closes and they lose their ability to speak.
   * If a user times out 3 times, they get kicked out of the room for inactivity and their IP address is temporarily banned.
   * For the sake of brevity and a consistent aesthetic, there are limitations to the size and type of the message content.
-  * Users may use a #command such as #news to receive the latest news from a News API. More commands may be added in the future. 
+  * Users may use a #command such as #news to receive the latest news from a News API. A few more interesting commands will be added in the future. 
