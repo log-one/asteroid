@@ -13,7 +13,7 @@ Chat apps can be boring because the users usually have to do all the work of kee
 
 ### Screenshot:
 
-![](Chit.png)
+![](chit-updated.png)
 _Note: This is not the final draft. I'm just experimenting with the UI design._
 
 ### Features:
