@@ -1,0 +1,46 @@
+.timerBadge {
+  width: 5rem;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-bottom-left-radius: 50px;
+  border-top-left-radius: 80px;
+}
+
+.timerBadge p {
+  color: rgb(0, 0, 0);
+  padding: 0;
+  margin: 0;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-size: large;
+}
+
+.timerBadgeWarning {
+  background: transparent;
+
+  width: 5rem;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-bottom-left-radius: 50px;
+  border-bottom-right-radius: 80px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.timerBadgeWarning p {
+  color: rgba(255, 6, 143, 0.7);
+  padding: 0;
+  margin: 0;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-size: 1.4em;
+  font-weight: bold;
+  position: relative;
+  right: 7%;
+}
