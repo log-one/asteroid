@@ -21,5 +21,5 @@ Chit is a chat environment with certain rules, tools and an interesting aestheti
   * There is a window of time within which a user must send a message when it is their turn to speak. When the built-in timer reaches zero, they miss their turn to speak.
   * If a user times out 3 times, they get kicked out of the room for inactivity and their IP address is temporarily banned.
   * For the sake of brevity and a consistent aesthetic, there are limitations to the size and type of the message content.
-  * Users may use a tool such as the #news command to receive the latest news from NewsAPI. A few more interesting commands will be added.
+  * Users may use tools such as the #news command to help spark a conversation. #news returns the latest news from NewsAPI. A few more interesting commands will be added soon.
 
