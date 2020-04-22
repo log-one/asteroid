@@ -9,11 +9,13 @@ const Messages = ({ messages, name }) => {
 
   return (
     <ScrollToBottom className="messages">
+      <div className="emptySpace"></div>
       {messages.map((message, index) => (
         <div key={index}>
           <Message message={message} name={trimmedName} />
         </div>
       ))}
+      <div className="emptySpace2"></div>
     </ScrollToBottom>
   );
 };

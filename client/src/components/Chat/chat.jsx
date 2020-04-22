@@ -20,8 +20,9 @@ const Chat = ({ location }) => {
   const [sideBarOpen, setSideBarOpen] = useState(false);
   const [canSpeak, setCanSpeak] = useState({
     eligible: true,
-    messageNum: 0,
+    lastMessageNum: 0,
   });
+
   const ENDPOINT = "localhost:5000";
 
   console.log("Another State Declaration");
@@ -47,7 +48,7 @@ const Chat = ({ location }) => {
       alert(e);
     });
 
-    console.log("EMITED JOIN (1st EFFECT");
+    console.log("EMITTED JOIN (1st EFFECT");
 
     //describe what needs to be done as the component unmounts
     return () => {
@@ -85,15 +86,29 @@ const Chat = ({ location }) => {
       //convert later to promises or async await
     });
 
+    //disable input if most recent message was sent by current user
+    if (messages.length !== 0)
+      if (messages[messages.length - 1].user.name === name) {
+        setCanSpeak({
+          eligible: false,
+          lastMessageNum: messages.length,
+        }); //when user speaks, note what number his message is in the list of all messages
+      }
     //turn-based conversation logic
     let messagesSince;
     //after new message from another user is rendered calculate how many messages have passed since the current user last spoke
-    messagesSince = messages.length - canSpeak.messageNum;
+    messagesSince = messages.length - canSpeak.lastMessageNum;
     //decide when to allow users to speak
     if (users.length === 2 && messagesSince === 1)
-      setCanSpeak({ eligible: true, messageNum: 0 });
+      setCanSpeak({
+        eligible: true,
+        lastMessageNum: canSpeak.lastMessageNum,
+      });
     if (users.length > 2 && messagesSince === 2)
-      setCanSpeak({ eligible: true, messageNum: 0 });
+      setCanSpeak({
+        eligible: true,
+        lastMessageNum: canSpeak.lastMessageNum,
+      });
 
     return () => {
       socket.off("message");
@@ -112,27 +127,35 @@ const Chat = ({ location }) => {
 
     if (message) {
       socket.emit("sendMessage", message, () => setMessage("")); //the callback function resets the message state to an empty string
-
-      setCanSpeak({ eligible: false, messageNum: messages.length + 1 }); //when user speaks, note what number his message is in the list of all messages
     }
   };
-
-  console.log("MIDDLE");
 
   //and then add a bunch of components/JSX below to render a proper looking Chat component
   return (
     <div className="outerContainer">
       {console.log("RENDER COMP (FOURTH) func")}
       <div className="container">
-        <InfoBar room={room} users={users} toggleSideBar={toggleSideBar} />
         <SideBar
           sideBarOpen={sideBarOpen}
           toggleSideBar={toggleSideBar}
           users={users}
+          room={room}
         />
+
+        <InfoBar
+          room={room}
+          name={name}
+          users={users}
+          toggleSideBar={toggleSideBar}
+          setCanSpeak={setCanSpeak}
+          canSpeak={canSpeak}
+          sideBarOpen={sideBarOpen}
+          messages={messages}
+        />
+
         <Messages messages={messages} name={name} />
         <InputBar
-          pattern={"(^[ a-z0-9]{2,100}$)|(^<3$)"}
+          pattern={"(^[ a-z0-9]{2,100}$)|(^<3$)|(^#news$)"}
           message={message}
           name={name}
           setMessage={setMessage}

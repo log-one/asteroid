@@ -1,17 +1,18 @@
 .messageBox {
   background: #f3f3f3;
-  border-radius: 20px;
-  padding: 5px 20px;
+  padding: 2% 6%;
   color: white;
   display: inline-block;
   max-width: 80%;
+  margin: 3% 0;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 .messageText {
-  width: 100%;
   letter-spacing: 0;
   float: left;
-  font-size: 1.1em;
+  font-size: 1.05em;
   word-wrap: break-word;
 }
 
@@ -21,9 +22,9 @@
 
 .messageContainer {
   display: flex;
+  width: 100%;
   justify-content: flex-end;
   padding: 0 5%;
-  margin-top: 3px;
 }
 
 .sentText {
@@ -50,18 +51,35 @@
   justify-content: flex-end;
 }
 
-.colorWhite {
-  color: white;
+.colorDark {
+  color: #e7e7e7ce;
 }
 
-.colorDark {
-  color: #353535;
+.colorWhite {
+  color: #000000;
+}
+
+.colorDark a {
+  color: #00aeffc5;
+}
+
+.colorWhite a {
+  color: #00327c;
+}
+.backgroundLight {
+  background: rgba(0, 0, 0, 0.7);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-left-radius: 20px;
 }
 
 .backgroundBlue {
-  background: #2979ff;
+  background: rgba(255, 255, 255, 0.7); /* fallback for old browsers */
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
 }
 
-.backgroundLight {
-  background: #f3f3f3;
+.firstMessage {
+  padding-top: 15%;
 }

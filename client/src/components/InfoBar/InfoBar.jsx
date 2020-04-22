@@ -1,22 +1,27 @@
 import React from "react";
-
+import Timer from "../Timer/Timer";
 import "./InfoBar.css";
-import closeIcon from "../../icons/closeIcon.png";
 
 const InfoBar = (props) => {
   return (
     <div className="infoBar">
-      <div
-        className="leftInnerContainer"
-        onClick={(event) => props.toggleSideBar(event)}
-      >
-        <h3 className="numUsers">{`(${props.users.length}) `}</h3>
-        <h3>{props.room}</h3>
+      <div className="leftInnerContainer">
+        <div
+          className="usersBar"
+          onClick={(event) => props.toggleSideBar(event)}
+        >
+          {props.users.map(() => {
+            return <span class={props.sideBarOpen ? "" : "dot"}></span>;
+          })}
+        </div>
       </div>
       <div className="rightInnerContainer">
-        <a href="/">
-          <img src={closeIcon} alt="close" />
-        </a>
+        <Timer
+          setCanSpeak={props.setCanSpeak}
+          canSpeak={props.canSpeak}
+          messages={props.messages}
+          name={props.name}
+        />
       </div>
     </div>
   );
