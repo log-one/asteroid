@@ -9,17 +9,16 @@
 * NewsAPI
 
 ### Motivation:
-Chat apps can be boring because the users usually have to do all the work of keeping a conversation going. Sometimes users speak too much or spam the chat. Sometimes there is nothing to talk about. Sometimes users just lurk and remain inactive. This chat app seeks to reduce the possibility of encountering such dull moments. 
+Having good conversations with strangers on most chat services is hit or miss. Users usually have to do all the work of keeping a decent conversation going. Sometimes users speak too much or spam the chat. Sometimes there is nothing to talk about. Sometimes users just lurk and remain inactive. This chat service takes away some of that responsibility from the user and incentivizes them to talk and have a good conversation. 
 
 ### Screenshot:
-
 ![](chit-updated.png)
 _Note: This is not the final draft. I'm just experimenting with the UI design._
 
 ### Features:
-Chit is a chat environment with certain rules, easter egg-like functions and an interesting aesthetic. Some of the features include:
-  * Users speak according to a turn-based system. After sending a message (depending on the number of users) the user must sit back and wait for one or more other users to speak before he can speak again.
-  * There is a window of time within which a user must send a message when it is their turn to speak. When the built-in timer reaches zero, the window closes and they lose their ability to speak.
+Chit is a chat environment with certain rules, easter egg-like functions and an interesting aesthetic. Strangers are matched and given the opportunity to interact in this environment. Some of the features include:
+  * Users speak according to a turn-based system. After sending a message the user must sit back and wait for the other user to speak before they can speak again.
+  * There is a window of time within which a user must send a message when it is their turn to speak. When the built-in timer reaches zero, they miss their turn to speak.
   * If a user times out 3 times, they get kicked out of the room for inactivity and their IP address is temporarily banned.
   * For the sake of brevity and a consistent aesthetic, there are limitations to the size and type of the message content.
   * Users may use a #command such as #news to receive the latest news from a News API. A few more interesting commands will be added in the future. 
