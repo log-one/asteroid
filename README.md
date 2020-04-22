@@ -13,7 +13,7 @@ Having good conversations with strangers on most chat services is hit or miss. U
 
 ### Screenshot:
 ![](chit-updated.png)
-_Note: This is not the final draft. I'm just experimenting with the UI design._
+_Note: This is not the final version. I'm just experimenting with the UI design._
 
 ### Features:
 Chit is a chat environment with certain rules, easter egg-like functions and an interesting aesthetic. Strangers are matched and given the opportunity to interact in this environment. Some of the features include:
