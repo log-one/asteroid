@@ -1,1 +1,15 @@
 eureka.txt
+client/src/icons/blurry-bg-cutout.png
+client/src/icons/blurry-bg-flip.png
+client/src/icons/blurry-bg.png
+client/src/icons/final-bg.png
+client/src/icons/lowpoly.png
+client/src/icons/lowpoly.svg
+client/src/icons/lowpolydark.png
+client/src/icons/lowpolymir.svg
+client/src/icons/lowpolymirror.png
+client/src/icons/lowpolyulta-svg.svg
+client/src/icons/lowpolyulta.svg
+client/src/icons/send.svg
+client/src/icons/thefinalform.png
+server/database.js
