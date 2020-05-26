@@ -4,7 +4,7 @@ import "./InputBar.css";
 import sendIcon from "../../icons/send.svg";
 
 const InputBar = ({ canSpeak, message, setMessage, sendMessage, pattern }) => {
-  if (canSpeak.eligible) {
+  if (canSpeak) {
     return (
       <form className="form">
         <input
@@ -17,7 +17,7 @@ const InputBar = ({ canSpeak, message, setMessage, sendMessage, pattern }) => {
           onKeyPress={(e) => (e.key === "Enter" ? sendMessage(e) : null)}
         />
         <div className="sendButton" onClick={(e) => sendMessage(e)}>
-          <img className="sendIcon" src={sendIcon} />
+          <img className="sendIcon" src={sendIcon} alt="send button icon" />
         </div>
       </form>
     );
@@ -33,7 +33,7 @@ const InputBar = ({ canSpeak, message, setMessage, sendMessage, pattern }) => {
           disabled
         />
         <div className="sendButton" onClick={(e) => sendMessage(e)}>
-          <img className="sendIcon" src={sendIcon} />
+          <img className="sendIcon" src={sendIcon} alt="send button icon" />
         </div>
       </form>
     );

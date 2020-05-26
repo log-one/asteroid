@@ -10,7 +10,8 @@ const InfoBar = (props) => {
           className="usersBar"
           onClick={(event) => props.toggleSideBar(event)}
         >
-          {props.users.map(() => {
+          <span class={props.sideBarOpen ? "" : "dot"}></span>
+          {props.peers.map(() => {
             return <span class={props.sideBarOpen ? "" : "dot"}></span>;
           })}
         </div>
@@ -21,6 +22,7 @@ const InfoBar = (props) => {
           canSpeak={props.canSpeak}
           messages={props.messages}
           name={props.name}
+          enqueued={props.enqueued}
         />
       </div>
     </div>

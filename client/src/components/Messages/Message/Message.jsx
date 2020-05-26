@@ -7,7 +7,7 @@ const Message = ({ message: { user, text, link }, name }) => {
   //logic which determines what kind of Message component is rendered
   let isSentByCurrentUser = false;
 
-  if (user.name === name) {
+  if (user === name) {
     isSentByCurrentUser = true;
   }
 
@@ -18,18 +18,18 @@ const Message = ({ message: { user, text, link }, name }) => {
   //       <div className="messageBox backgroundLight">
   //         <p className="messageText colorDark">{ReactEmoji.emojify(text)}</p>
   //       </div>
-  //       <p className="sentText pl-10">{user.name}</p>
+  //       <p className="sentText pl-10">{user}</p>
   //     </div>
   //   );
   // }
 
   return isSentByCurrentUser ? (
     <div className="messageContainer justifyEnd">
-      <p className="sentText pr-10">{user.name}</p>
+      <p className="sentText pr-10">{user}</p>
       <div className="messageBox backgroundBlue">
         <p className="messageText colorWhite">
           {ReactEmoji.emojify(text)}
-          {link ? <a href={link}>{" " + "here's the full story."}</a> : null}
+          {link ? <a href={link}>{" here's the full story."}</a> : null}
         </p>
       </div>
     </div>
@@ -38,10 +38,10 @@ const Message = ({ message: { user, text, link }, name }) => {
       <div className="messageBox backgroundLight">
         <p className="messageText colorDark">
           {ReactEmoji.emojify(text)}
-          {link ? <a href={link}>{" " + "here's the full story."}</a> : null}
+          {link ? <a href={link}>{" here's the full story."}</a> : null}
         </p>
       </div>
-      <p className="sentText pl-10">{user.name}</p>
+      <p className="sentText pl-10">{user}</p>
     </div>
   );
 };
