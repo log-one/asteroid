@@ -4,7 +4,27 @@ mongoose.set("useCreateIndex", true); //fix deprecation warning
 const userSchema = new mongoose.Schema({
   _id: String,
   name: { type: String, default: "", unique: true },
-  room: { type: String, default: "" },
+  room: String,
+  password: { type: String, default: "" },
+});
+
+const roomSchema = new mongoose.Schema({
+  _id: String,
+  creator: String,
+  users: [
+    {
+      _id: String,
+      name: { type: String, default: "", unique: true },
+      room: String,
+      password: { type: String, default: "" },
+    },
+  ],
+  messages: [
+    {
+      user: String,
+      text: String,
+    },
+  ],
 });
 
 const newUserSchema = new mongoose.Schema({
@@ -19,7 +39,7 @@ const newUserSchema = new mongoose.Schema({
     {
       roomName: String,
       opponent: String,
-      messages: [{ sender: String, message: String }],
+      messages: [{ user: String, text: String }],
       count: Number,
     },
   ],
@@ -27,6 +47,9 @@ const newUserSchema = new mongoose.Schema({
 
 //create User model
 const User = mongoose.model("User", userSchema);
+const Room = mongoose.model("Room", roomSchema);
+
+//
 const newUser = mongoose.model("newUser", newUserSchema);
 
-module.exports = User;
+module.exports = { User, Room };

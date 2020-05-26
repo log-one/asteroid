@@ -1,5 +1,7 @@
 //use this file to create helper functions to manage users
 
+const User = require("./models");
+
 const users = [];
 
 const addUser = ({ id, name, room }) => {
