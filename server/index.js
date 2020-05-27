@@ -375,7 +375,7 @@ io.on("connection", (socket) => {
               socket.emit("message", {
                 user: "admin",
                 text: `welcome back home, ${user.name}!`,
-              });
+              }); //WHY IS THIS ACTING WEIRD?
 
               socket.emit("message", {
                 user: "admin",

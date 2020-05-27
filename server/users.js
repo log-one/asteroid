@@ -1,44 +1,52 @@
-//use this file to create helper functions to manage users
+const mongoose = require("mongoose");
+mongoose.set("useCreateIndex", true); //fix deprecation warning
 
-const User = require("./models");
+//create user schema
+const userSchema = new mongoose.Schema({
+  _id: String,
+  name: { type: String, default: "", unique: true },
+  room: { type: String, default: `#home/${name}` },
+  password: { type: String, default: "" },
+});
 
-const users = [];
+//create User model
+const User = mongoose.model("User", userSchema);
 
-const addUser = ({ id, name, room }) => {
+//create new user
+async function addUser({ id, name, room, password }) {
   name = name.trim().toLowerCase();
-  room = room.trim().toLowerCase();
 
-  //check if a user with the same name already exists in the room
-  const existingUser = users.find(
-    (user) => user.room === room && user.name === name
-  );
-
-  //if true, exit the function and return an error
-  if (existingUser) {
-    return { error: "Username is taken" };
+  // else make a 'user' object and save it as a document in the db
+  const user = new User({ _id: id, name, room, password });
+  try {
+    const savedUser = await user.save();
+    return { user: savedUser };
+  } catch {
+    return { error: "Username already exists" };
   }
+}
 
-  // else make a 'user' object and push it into the 'users' array
-  const user = { id, name, room };
-  users.push(user);
+// get user by id
+async function getUser(id) {
+  const user = await User.findById(id);
+  return user;
+}
 
-  return { user };
+//update room name in existing user
+async function updateUserRoom(roomName, id) {
+  return await User.findByIdAndUpdate(id, { room: roomName }, { new: true });
+}
+
+// delete user
+async function removeUser(id) {
+  const deletedUser = await User.deleteOne({ _id: id });
+  console.log("DELETED");
+  return deletedUser;
+}
+
+module.exports = {
+  addUser,
+  getUser,
+  updateUserRoom,
+  removeUser,
 };
-
-const removeUser = (id) => {
-  const index = users.findIndex((user) => user.id === id);
-
-  if (index !== -1) {
-    return users.splice(index, 1)[0];
-  }
-};
-
-const getUser = (id) => {
-  return users.find((user) => user.id === id);
-};
-
-const getUsersInRoom = (room) => {
-  return users.filter((user) => user.room === room);
-};
-
-module.exports = { addUser, removeUser, getUser, getUsersInRoom };
