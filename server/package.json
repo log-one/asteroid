@@ -17,7 +17,10 @@
     "socket.io": "^2.3.0"
   },
   "dependencies": {
+    "bcrypt": "^4.0.1",
     "got": "^10.7.0",
+    "joi": "^14.3.1",
+    "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.5.5",
     "mongoose": "^5.9.7"
   }

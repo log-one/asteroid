@@ -1,3 +1,7 @@
+const { getUser, updateUserRoom } = require("./users.js");
+
+const { addRoom, getRoom, addUserToRoom } = require("./rooms.js");
+
 //initialize empty queue of sockets
 const queue = [];
 
@@ -52,8 +56,8 @@ async function FindPeerForLoneSocket(io, socket) {
       peerSocket.leave(`#queue/${peer.name}`);
 
       //update room for user and peer
-      await updateRoom(roomName, user.id);
-      await updateRoom(roomName, peer.id);
+      await updateUserRoom(user.name, roomName);
+      await updateUserRoom(peer.name, roomName);
 
       // join both sockets to room
       socket.join(roomName);

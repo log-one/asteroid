@@ -1,36 +1,52 @@
 const express = require("express");
 const socketio = require("socket.io");
+const mongoose = require("mongoose");
 //Why use socket.io?
 //HTTP requests are slow. To do real time stuff, it's better to use sockets.
 const http = require("http");
 
 const PORT = process.env.PORT || 5000;
 
-const router = require("./router");
+const register = require("./register");
+const login = require("./login");
 
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server); //now we have an instance of the socket.io server can do a lot of stuff
 const got = require("got");
 
+const { addUser, deleteUser, getUser, updateUserRoom } = require("./users.js");
+
 const {
-  addUser,
   addRoom,
-  removeRoom,
+  deleteRoom,
   getRoom,
-  enqueue,
-  dequeue,
-  queueIsEmpty,
-  removeFromQueue,
-  removeUser,
-  getUser,
-  updateRoom,
-  getSocket,
-  FindPeerForLoneSocket,
   addUserToRoom,
   removeUserFromRoom,
   addMessageToRoom,
-} = require("./database.js");
+} = require("./rooms.js");
+
+const {
+  enqueue,
+  removeFromQueue,
+  getSocket,
+  FindPeerForLoneSocket,
+} = require("./queue.js");
+
+app.use(express.json());
+//middleware func
+app.use("/u/register", register);
+app.use("/u/login", login);
+//connect to db
+
+mongoose
+  .connect("mongodb://localhost:27017/chit", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+  }) //connects to database
+  .catch((err) => console.log("Failed to connect to MongoDB...", err))
+  .then(() => console.log("Connected to MongoDB..."));
 
 //The disconnect function inside of the io.on() because we are managing that particular socket that was connected.
 io.on("connection", (socket) => {
@@ -40,12 +56,7 @@ io.on("connection", (socket) => {
 
   // when a new socket joins do this...
   socket.on("join", async (joinData, callback) => {
-    let { error, user } = await addUser({
-      id: socket.id,
-      name: joinData.name,
-      room: `#home/${joinData.name}`,
-      password: "default",
-    }); //addUser() returns either a error object or user object
+    let { error, user } = await addUser(joinData.name, "default69"); //addUser() returns either a error object or user object
 
     //a callback function can be passed in along with the data
     //this callback can be executed after some thing has been done with the data
@@ -103,7 +114,7 @@ io.on("connection", (socket) => {
       //leave #home
       socket.leave(`#home/${user.name}`);
       //update user.room
-      user = await updateRoom(`#queue/${user.name}`, user.id);
+      user = await updateUserRoom(user.name, `#queue/${user.name}`);
       //update room of socket and user
       socket.join(`#queue/${user.name}`);
 
@@ -157,7 +168,7 @@ io.on("connection", (socket) => {
       //remove socket from current room
       socket.leave(user.room);
       //update user.room
-      user = await updateRoom(`#queue/${user.name}`, user.id);
+      user = await updateUserRoom(user.name, `#queue/${user.name}`);
       //update room of socket and user
       socket.join(`#queue/${user.name}`);
 
@@ -220,7 +231,7 @@ io.on("connection", (socket) => {
       //leave current room
       socket.leave(user.room);
       //update user.room
-      user = await updateRoom(`#home/${user.name}`, user.id);
+      user = await updateUserRoom(user.name, `#home/${user.name}`);
       //join #home
       socket.join(`#home/${user.name}`);
 
@@ -290,7 +301,7 @@ io.on("connection", (socket) => {
           socket.leave(`#home/${user.name}`);
 
           //update user.room
-          user = await updateRoom(`#room/${key}`, user.id);
+          user = await updateUserRoom(user.name, `#room/${key}`);
 
           // join #room/key
           socket.join(`#room/${key}`);
@@ -359,7 +370,7 @@ io.on("connection", (socket) => {
               //leave private room
               socket.leave(user.room);
               //update user.room
-              user = await updateRoom(`#home/${user.name}`, user.id);
+              user = await updateUserRoom(user.name, `#home/${user.name}`);
               //join #home
               socket.join(`#home/${user.name}`);
               //clear messages
@@ -385,7 +396,7 @@ io.on("connection", (socket) => {
           }
 
           //remove private room from database
-          removeRoom(`#room/${key}`);
+          deleteRoom(`#room/${key}`);
 
           socket.emit("message", {
             user: "admin",
@@ -495,13 +506,12 @@ io.on("connection", (socket) => {
         enqueue(peerSocket);
         peerSocket.emit("enqueued");
       }
-      return await removeUser(socket.id);
+      //MUST BE CHANGED ONLY DELETE ON LOGOUT
+      return await deleteUser(socket.id);
     } catch {
       return Error("something went wrong");
     }
   });
 });
-
-app.use(router);
 
 server.listen(PORT, () => console.log(`Server has started on port ${PORT}`));

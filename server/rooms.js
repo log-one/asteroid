@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 mongoose.set("useCreateIndex", true); //fix deprecation warning
 
-//create Room schema
+//create Room schema UPDATE USERS EMBEDD DOC PROPERLY CHECK MOSH
 const roomSchema = new mongoose.Schema({
-  _id: String,
+  name: String,
   creator: String,
   users: [
     {
@@ -26,7 +26,7 @@ const Room = mongoose.model("Room", roomSchema);
 
 //add a new room to 'Rooms' collection
 async function addRoom(name, creator) {
-  const room = new Room({ _id: name, creator });
+  const room = new Room({ name, creator });
   try {
     const savedRoom = await room.save();
 
@@ -40,35 +40,35 @@ async function addRoom(name, creator) {
 //UPDATE ROOM MESSAGES FUNCTION HERE
 
 async function getRoom(name) {
-  return await Room.findById(name);
+  return await Room.findOne({ name });
 }
 
-async function addUserToRoom(roomId, user) {
-  return await Room.findByIdAndUpdate(
-    roomId,
+async function addUserToRoom(name, user) {
+  return await Room.findOneAndUpdate(
+    { name },
     { $push: { users: user } },
     { new: true }
   );
 }
 
-async function removeUserFromRoom(roomId, user) {
-  return await Room.findByIdAndUpdate(
-    roomId,
+async function removeUserFromRoom(name, user) {
+  return await Room.findOneAndUpdate(
+    { name },
     { $pull: { users: { name: user.name } } },
     { new: true }
   );
 }
 
-async function addMessageToRoom(roomId, message) {
-  return await Room.findByIdAndUpdate(
-    roomId,
+async function addMessageToRoom(name, message) {
+  return await Room.findOneAndUpdate(
+    { name },
     { $push: { messages: message } },
     { new: true }
   );
 }
 
-async function removeRoom(id) {
-  const deletedRoom = await Room.deleteOne({ _id: id });
+async function deleteRoom(name) {
+  const deletedRoom = await Room.deleteOne({ name });
   return deletedRoom;
 }
 
@@ -78,5 +78,5 @@ module.exports = {
   addUserToRoom,
   removeUserFromRoom,
   addMessageToRoom,
-  removeRoom,
+  deleteRoom,
 };
