@@ -1,0 +1,16 @@
+.joinInput {
+  border-radius: 0;
+  padding: 15px 20px;
+  width: 100%;
+  color: black;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}
+
+.input-error {
+  background-color: rgb(238, 61, 61);
+  padding: 15px 20px;
+  font-size: 12px;
+}

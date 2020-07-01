@@ -1,0 +1,99 @@
+.outerContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #1a1a1d;
+}
+
+.homeContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #e5e5e8;
+  background-size: cover;
+  height: 60%;
+  width: 35%;
+  position: relative;
+}
+
+.titleBar {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 5%;
+}
+
+.helpButton {
+  display: flex;
+  align-items: center;
+  width: 2.3em;
+  border: none;
+  background-color: #e5e5e8;
+  padding: 0;
+}
+
+.helpIcon {
+  width: 2.3em;
+  margin-bottom: 40%;
+}
+
+.friendsButton {
+  background-color: #0dcc86;
+  height: 100%;
+  width: 25%;
+  font-size: medium;
+  font-weight: bolder;
+  color: #22031f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.05em;
+  border: none;
+  border-bottom-left-radius: 100em;
+  border-bottom-right-radius: 100em;
+}
+
+p {
+  text-align: center;
+  padding: 0 5%;
+  margin-bottom: 10%;
+  font-size: large;
+}
+
+.findHumans {
+  background-color: #0dcc86;
+  height: 0;
+  width: 40%;
+  padding-bottom: 40%;
+  font-size: large;
+  font-weight: bold;
+  color: #22031f;
+  border: none;
+  border-radius: 50%;
+  margin: 0 30% 10% 30%;
+  position: relative;
+}
+
+.findHumans span {
+  position: absolute;
+  top: 39%;
+  font-size: 1.5em;
+  right: 33%;
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+  .outerContainer {
+    height: 100%;
+  }
+
+  .homeContainer {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@media (min-width: 480px) and (max-width: 1200px) {
+  .homeContainer {
+    width: 60%;
+  }
+}

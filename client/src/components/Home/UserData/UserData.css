@@ -1,0 +1,14 @@
+.userDataContainer {
+  padding: 5% 0 0 15%;
+  color: black;
+}
+
+.userDataContainer div {
+  display: flex;
+  padding: 3% 0;
+  letter-spacing: 0.1em;
+}
+
+.userDataContainer img {
+  padding: 0 10% 0 5%;
+}

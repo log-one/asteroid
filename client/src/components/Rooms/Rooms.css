@@ -1,0 +1,164 @@
+.roomContainer {
+  display: flex column;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+  background-color: #e5e5e8;
+}
+
+.roomContainer h2 {
+  color: black;
+  text-align: right;
+  padding-right: 10%;
+}
+
+.roomList {
+  display: flex column;
+  padding: 0;
+  height: 70%;
+  justify-content: space-evenly;
+  overflow-y: auto;
+}
+
+.roomList li {
+  list-style-type: none;
+  width: 50%;
+  height: 0;
+  padding-bottom: 50%;
+  background-color: #e5e5e8;
+  margin-bottom: 6%;
+  position: relative;
+}
+
+.numOnline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 10%;
+  color: #22031f;
+  font-weight: bolder;
+  background-color: #0dcc86;
+}
+
+.roomButton {
+  border: none;
+  margin: 0;
+  background-color: #67acfa;
+  color: white;
+  font-weight: bold;
+  font-size: large;
+  text-align: center;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+
+  position: absolute;
+}
+
+.roomList li:nth-child(odd) .roomButton h3 {
+  margin: 0 0 5% 0;
+  padding: 10% 0 0 10%;
+  text-align: left;
+}
+
+.roomList li:nth-child(odd) .roomButton h5 {
+  margin: 0;
+  padding: 0 0 0 10%;
+  text-align: left;
+}
+
+.roomList li:nth-child(even) .roomButton h3 {
+  margin: 0 0 5% 0;
+  padding: 10% 10% 0 0;
+  text-align: right;
+}
+
+.roomList li:nth-child(even) .roomButton h5 {
+  margin: 0;
+  padding: 0 10% 0 0;
+  text-align: right;
+}
+
+.createRoomItem {
+  background-color: #e9e9e9;
+  position: relative;
+}
+
+.createRoomItem input {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+  border: none;
+  text-align: center;
+  font-weight: bold;
+  font-size: large;
+  background-color: #67acfa;
+  text-decoration: none;
+}
+
+.createRoom {
+  background-color: #ff707b;
+  border: none;
+  font-weight: bolder;
+  font-size: xx-large;
+  color: #22031f;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+
+  position: absolute;
+}
+
+.createRoomReposition {
+  background-color: #ff707b;
+  border: none;
+  font-weight: bold;
+  font-size: xx-large;
+  color: #22031f;
+  padding: 0;
+  width: 45%;
+  height: 45%;
+  border-radius: 100%;
+  left: 50%;
+  top: 70%;
+  position: absolute;
+}
+
+.roomList li:nth-child(even) {
+  margin: 0 0 0 50%;
+  border-top-left-radius: 100%;
+  border-bottom-left-radius: 100%;
+  background-color: #67acfa;
+}
+
+.roomList li:nth-child(even) button {
+  border-top-left-radius: 100%;
+  border-bottom-left-radius: 100%;
+}
+
+.roomList li:nth-child(odd) {
+  border-top-right-radius: 100%;
+  border-bottom-right-radius: 100%;
+  background-color: #67acfa;
+}
+
+.roomList li:nth-child(odd) button {
+  border-top-right-radius: 100%;
+  border-bottom-right-radius: 100%;
+}
+
+.deleteButton {
+  border: none;
+  width: 15%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  background-color: #67acfa;
+}
+
+.deleteButton img {
+  filter: invert(100%);
+  -webkit-filter: invert(100%);
+}
