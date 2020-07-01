@@ -67,14 +67,14 @@
   color: #00327c;
 }
 .backgroundLight {
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.8);
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   border-bottom-left-radius: 20px;
 }
 
 .backgroundBlue {
-  background: rgba(255, 255, 255, 0.7); /* fallback for old browsers */
+  background: rgba(255, 255, 255, 0.8); /* fallback for old browsers */
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;

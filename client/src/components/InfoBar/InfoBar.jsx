@@ -2,21 +2,12 @@ import React from "react";
 import Timer from "../Timer/Timer";
 import "./InfoBar.css";
 
+// onClick={(event) => props.toggleSideBar(event)}
+
 const InfoBar = (props) => {
   return (
     <div className="infoBar">
-      <div className="leftInnerContainer">
-        <div
-          className="usersBar"
-          onClick={(event) => props.toggleSideBar(event)}
-        >
-          <span class={props.sideBarOpen ? "" : "dot"}></span>
-          {props.peers.map(() => {
-            return <span class={props.sideBarOpen ? "" : "dot"}></span>;
-          })}
-        </div>
-      </div>
-      <div className="rightInnerContainer">
+      {props.pageName !== "home" ? (
         <Timer
           setCanSpeak={props.setCanSpeak}
           canSpeak={props.canSpeak}
@@ -24,7 +15,9 @@ const InfoBar = (props) => {
           name={props.name}
           enqueued={props.enqueued}
         />
-      </div>
+      ) : (
+        <button className="helpButton">butt</button>
+      )}
     </div>
   );
 };
