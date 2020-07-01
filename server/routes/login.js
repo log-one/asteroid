@@ -1,9 +1,11 @@
 //create the router object
+const config = require("config");
 const express = require("express");
 const bcrypt = require("bcrypt");
 const Joi = require("joi");
+const jwt = require("jsonwebtoken");
 const router = express.Router();
-const { getUser, addUser } = require("./users");
+const { getUser } = require("../users");
 
 // handle post request to login and authenticate existing user
 router.post("/", async (req, res) => {
@@ -20,7 +22,8 @@ router.post("/", async (req, res) => {
   if (!validPassword)
     return res.status(400).send("Invalid username or password.");
 
-  res.send(true);
+  const token = user.genAuthToken();
+  res.header("x-auth-token", token).send(user);
 });
 
 function validate(req) {

@@ -1,0 +1,5 @@
+{
+  "registerUrl": "/register",
+  "loginUrl": "/login",
+  "chatUrl": "/chat"
+}

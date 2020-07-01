@@ -1,8 +1,11 @@
 //create the router object
 const express = require("express");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const config = require("config");
 const router = express.Router();
-const { getUser, addUser, validateUser } = require("./users");
+
+const { getUser, addUser, validateUser } = require("../users");
 
 // handle post request to register new user
 router.post("/", async (req, res) => {
@@ -19,7 +22,11 @@ router.post("/", async (req, res) => {
 
   //since user is valid, save to database
   user = await addUser(req.body.name, hashed);
-  res.send(user);
+
+  //pass payload and private key to generate jwt token
+  const token = user.genAuthToken();
+
+  res.header("x-auth-token", token).send(user);
 });
 
 module.exports = router;

@@ -1,21 +1,24 @@
 const express = require("express");
+const path = require("path");
 const socketio = require("socket.io");
 const mongoose = require("mongoose");
+const config = require("config");
 //Why use socket.io?
 //HTTP requests are slow. To do real time stuff, it's better to use sockets.
 const http = require("http");
 
 const PORT = process.env.PORT || 5000;
 
-const register = require("./register");
-const login = require("./login");
+const register = require("./routes/register");
+const login = require("./routes/login");
+const chat = require("./routes/chat");
 
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server); //now we have an instance of the socket.io server can do a lot of stuff
 const got = require("got");
 
-const { addUser, deleteUser, getUser, updateUserRoom } = require("./users.js");
+const { getUser, updateUserRoom, updateSocketId } = require("./users.js");
 
 const {
   addRoom,
@@ -27,17 +30,25 @@ const {
 } = require("./rooms.js");
 
 const {
-  enqueue,
   removeFromQueue,
   getSocket,
   FindPeerForLoneSocket,
 } = require("./queue.js");
 
 app.use(express.json());
+// Serve the static files from the React app
+// app.use(express.static(path.join(__dirname, "/../client/")));
 //middleware func
-app.use("/u/register", register);
-app.use("/u/login", login);
+app.use("/register", register);
+app.use("/login", login);
+app.use("/chat", chat);
+
 //connect to db
+
+if (!config.get("jwtPrivateKey")) {
+  console.error("FATAL ERROR: jwtPrivateKey not found.");
+  process.exit(1);
+}
 
 mongoose
   .connect("mongodb://localhost:27017/chit", {
@@ -48,6 +59,10 @@ mongoose
   .catch((err) => console.log("Failed to connect to MongoDB...", err))
   .then(() => console.log("Connected to MongoDB..."));
 
+// app.get("/", (req, res) => {
+//   res.sendFile(path.join(__dirname + "/../client/public/index.html"));
+// });
+
 //The disconnect function inside of the io.on() because we are managing that particular socket that was connected.
 io.on("connection", (socket) => {
   //declare useful variables
@@ -55,51 +70,54 @@ io.on("connection", (socket) => {
   console.log(ip);
 
   // when a new socket joins do this...
-  socket.on("join", async (joinData, callback) => {
-    let { error, user } = await addUser(joinData.name, "default69"); //addUser() returns either a error object or user object
-
-    //a callback function can be passed in along with the data
-    //this callback can be executed after some thing has been done with the data
-
-    if (error) {
-      console.log("Error", error, "User", joinData.name);
-      return callback(error);
-    }
-
-    //add user's #home to Rooms
-    if (!(await getRoom(`#home/${joinData.name}`)))
-      await addRoom(`#home/${joinData.name}`, user.name);
-
-    //add user to room.users
-    await addUserToRoom(`#home/${joinData.name}`, user);
+  socket.on("join", async (userName) => {
+    console.log("JOINED");
+    let user = await updateSocketId(userName, socket.id);
+    const homeRoom = `#home/${userName}`;
 
     //join socket to home room
-    socket.join(user.room);
+    socket.join(homeRoom);
 
-    socket.emit("message", {
-      user: "admin",
-      text: `hi ${user.name}, welcome to chit. this is your home screen`,
-    });
+    //get home room if it already exists
+    const existingHomeRoom = await getRoom(homeRoom);
 
-    setTimeout(() => {
+    //add user's #home to Rooms if it doesnt exist
+    if (!existingHomeRoom) {
+      await addRoom(homeRoom, userName);
+
+      //add user to room.users
+      await addUserToRoom(homeRoom, user);
+
+      //emit welcome messages
       socket.emit("message", {
         user: "admin",
-        text: `in the meantime, figure out the features and rules of this room by talking to yourself!`,
+        text: `hi ${userName}, welcome to chit. this is your home screen`,
       });
-    }, 1000);
 
-    setTimeout(() => {
-      socket.emit("message", {
-        user: "admin",
-        text: `here's a hint: type '#news' and hit send ;)`,
-      });
-    }, 2000);
-    //callback?
+      setTimeout(() => {
+        socket.emit("message", {
+          user: "admin",
+          text: `in the meantime, figure out the features and rules of this room by talking to yourself!`,
+        });
+      }, 1000);
+
+      setTimeout(() => {
+        socket.emit("message", {
+          user: "admin",
+          text: `here's a hint: type '#news' and hit send ;)`,
+        });
+      }, 2000);
+    } else {
+      //send stored messages to client
+      const oldMessages = existingHomeRoom.messages;
+      socket.emit("load-prev-messages", oldMessages);
+    }
+
+    //?
   });
 
-  socket.on("#chat", async (callback) => {
+  socket.on("#chat", async () => {
     let user = await getUser(socket.id);
-    callback();
 
     //#chat command only works when user is in the 'home' screen
     if (user.room !== `#home/${user.name}`) {
@@ -113,9 +131,9 @@ io.on("connection", (socket) => {
 
       //leave #home
       socket.leave(`#home/${user.name}`);
-      //update user.room
+      //update user.room to queue
       user = await updateUserRoom(user.name, `#queue/${user.name}`);
-      //update room of socket and user
+      //update room of socket
       socket.join(`#queue/${user.name}`);
 
       //emit matching in progress message
@@ -126,68 +144,60 @@ io.on("connection", (socket) => {
 
       //match socket with another socket from queue
       setTimeout(async () => {
-        await FindPeerForLoneSocket(io, socket);
+        await FindPeerForLoneSocket(socket);
       }, 1500);
     }
   });
 
-  socket.on("#skip", async (callback) => {
+  socket.on("#skip", async () => {
     let user = await getUser(socket.id);
 
-    //get peer from room.users
-    const room = await getRoom(user.room);
-    const peerArray = room.users.filter((u) => u.id !== user.id);
-    const peer = peerArray[0];
-
-    //#skip command only works when user is not in #home or #queue
+    //#skip command only works when user is connected to 1-on-1 peer
     if (
       user.room === `#home/${user.name}` ||
       user.room === `#queue/${user.name}` ||
       user.room.slice(0, 6) === "#room/"
     ) {
-      callback();
       socket.emit("message", {
         user: "",
         text: `invalid command | #skip only works when you are already connected to a human. try #chat if you are ready to connect to a human.`,
       });
     } else {
-      callback();
-
-      socket.emit("clear-messages");
-
-      socket.broadcast.to(user.room).emit("message", {
+      io.in(user.room).emit("message", {
         user: "admin",
         text: `${user.name} has left the chat...`,
       });
 
-      socket.broadcast.to(user.room).emit("message", {
+      io.in(user.room).emit("message", {
         user: "",
         text: `use #home to return home, or #skip to find another human.`,
       });
 
       //remove socket from current room
       socket.leave(user.room);
+      //update users array in room
+      await removeUserFromRoom(user.room, user);
       //update user.room
       user = await updateUserRoom(user.name, `#queue/${user.name}`);
-      //update room of socket and user
+
       socket.join(`#queue/${user.name}`);
+
+      socket.emit("clear-messages");
 
       socket.emit("message", {
         user: "",
-        text: `you skipped ${peer.name}. you will soon be matched with another human...`,
+        text: `you will soon be matched with another human...`,
       });
 
       //match socket with another socket from queue
       setTimeout(async () => {
-        await FindPeerForLoneSocket(io, socket);
+        await FindPeerForLoneSocket(socket);
       }, 1500);
     }
   });
 
-  socket.on("#home", async (callback) => {
+  socket.on("#home", async () => {
     let user = await getUser(socket.id);
-
-    callback();
 
     //#home command only works when user is connected to another user or waiting in queue or in a private room
     if (user.room === `#home/${user.name}`) {
@@ -201,35 +211,28 @@ io.on("connection", (socket) => {
         user.room !== `#queue/${user.name}` &&
         user.room.slice(0, 6) !== "#room/"
       ) {
-        socket.broadcast.to(user.room).emit("message", {
+        io.in(user.room).emit("message", {
           user: "admin",
-          text: `${user.name} has left the chat...`,
+          text: `${user.name} has left the chat and returned home...`,
         });
-        socket.broadcast.to(user.room).emit("message", {
+        io.in(user.room).emit("message", {
           user: "",
           text: `use #home to return home, or #skip to find another human.`,
         });
       }
 
       //if user is in a private room do this
-      if (user.room.slice(0, 6) === "#room/") {
-        socket.broadcast.to(user.room).emit("message", {
+      else if (user.room.slice(0, 6) === "#room/") {
+        io.in(user.room).emit("message", {
           user: "admin",
           text: `${user.name} has left the chat...`,
         });
+      } else removeFromQueue(socket.id); //remove socket from queue if its in queue
 
-        console.log("USER ROOM ISSSSSSSS", user.room, user);
-        try {
-          await removeUserFromRoom(user.room, user);
-        } catch (err) {
-          console.log(err);
-        }
-      }
-
-      //remove socket from queue if its in queue
-      removeFromQueue(socket.id);
       //leave current room
       socket.leave(user.room);
+      //update users array in room
+      await removeUserFromRoom(user.room, user);
       //update user.room
       user = await updateUserRoom(user.name, `#home/${user.name}`);
       //join #home
@@ -240,6 +243,7 @@ io.on("connection", (socket) => {
       //send stored messages to client
       socket.emit("load-prev-messages", (await getRoom(user.room)).messages);
 
+      //welcome back message
       socket.emit("message", {
         user: "admin",
         text: `welcome back home, ${user.name}!`,
@@ -247,9 +251,8 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("#room/new", async (callback) => {
+  socket.on("#room/new", async () => {
     const user = await getUser(socket.id);
-    callback();
 
     //generate secret room key that can be used to join the private room
     const roomKey = socket.id.slice(0, socket.id.length - 2);
@@ -279,9 +282,8 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("#room/join", async (key, callback) => {
+  socket.on("#room/join", async (key) => {
     let user = await getUser(socket.id);
-    callback();
 
     //#room/join/ command only works when user is in the 'home' screen
     if (user.room !== `#home/${user.name}`) {
@@ -345,9 +347,8 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("#room/delete", async (key, callback) => {
+  socket.on("#room/delete", async (key) => {
     let user = await getUser(socket.id);
-    callback();
 
     //#room/delete/ command only works when user is in the 'home' screen
     if (user.room !== `#home/${user.name}`) {
@@ -365,7 +366,7 @@ io.on("connection", (socket) => {
           if (users) {
             users.forEach(async (user) => {
               //get socket using socket id
-              const socket = getSocket(io, user.id);
+              const socket = getSocket(io, user.socketId);
 
               //leave private room
               socket.leave(user.room);
@@ -418,32 +419,29 @@ io.on("connection", (socket) => {
   });
 
   socket.on("update-messages", async (message) => {
-    const user = await getUser(socket.id);
-    const room = await getRoom(user.room);
-    console.log("updating messages...", message);
-    if (room) {
-      room.users.length > 1 &&
-      user.name === room.users[0].name &&
-      message.user !== ("admin" || "")
-        ? await addMessageToRoom(user.room, message)
-        : null;
+    try {
+      const user = await getUser(socket.id);
+      const room = await getRoom(user.room);
 
-      user.name === room.users[0].name && message.user === "admin"
-        ? await addMessageToRoom(user.room, message)
-        : null;
+      if (
+        user.room !== `#queue/${user.name}` &&
+        user.name === room.users[0].name &&
+        message.user !== ""
+      )
+        await addMessageToRoom(user.room, message);
+    } catch (err) {
+      console.log("UNEXPECTED ERROR", err);
     }
   });
 
   //handling an event recieved by the backend from the frontend
   //'sendMessage' event is for user generated messages
-  socket.on("sendMessage", async (text, callback) => {
+  socket.on("sendMessage", async (text) => {
     const user = await getUser(socket.id);
     if (user) {
-      console.log("UNO");
       const messageREGEX = /(^[ a-z0-9]{2,100}$)|(^<3$)/;
       if (messageREGEX.test(text)) {
         io.in(user.room).emit("message", { user: user.name, text });
-        console.log("DOSO", user.room);
       } else if (text === "#news") {
         const url =
           "http://newsapi.org/v2/top-headlines?" +
@@ -472,8 +470,7 @@ io.on("connection", (socket) => {
         text = "i apologize for trying to break the rules.";
         io.in(user.room).emit("message", { user: user.name, text });
         //Need to kick user out as well. INCOMPLETE
-      }
-      callback(); //to do something after the message is sent
+      } //to do something after the message is sent
     }
   });
 
@@ -483,31 +480,20 @@ io.on("connection", (socket) => {
 
       //get peer from room.users
       const room = await getRoom(user.room);
-      const peerArray = room.users.filter((u) => u.id !== user.id);
-      const peer = peerArray[0];
+      const peerArray = room.users.filter((u) => u.name !== user.name);
 
-      const peerSocket = getSocket(io, peer.id);
+      //if user was not in #home, remove him from room and alert peers and then add him to #home
+      if (peerArray) {
+        await removeUserFromRoom(room.name, user);
 
-      //alert peer
-      console.log("CHAT ENDING");
+        io.in(user.room).emit("message", {
+          user: "admin",
+          text: `${user.name} has disconnected...`,
+        });
 
-      io.in(user.room).emit("message", {
-        user: "Admin",
-        text: `${user.name} has left the chat...`,
-      });
-
-      if (peerSocket) {
-        // peerSocket.emit("message", {
-        //   user: "Admin",
-        //   text: `${user.name} has left the chat`,
-        // });
-
-        //add peer back to the queue
-        enqueue(peerSocket);
-        peerSocket.emit("enqueued");
+        //send user back to #home
+        await updateUserRoom(user.name, `#home/${user.name}`);
       }
-      //MUST BE CHANGED ONLY DELETE ON LOGOUT
-      return await deleteUser(socket.id);
     } catch {
       return Error("something went wrong");
     }

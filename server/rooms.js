@@ -8,7 +8,7 @@ const roomSchema = new mongoose.Schema({
   users: [
     {
       _id: String,
-      name: { type: String, default: "", unique: true },
+      name: { type: String, default: "" },
       room: String,
       password: { type: String, default: "" },
     },
@@ -28,12 +28,9 @@ const Room = mongoose.model("Room", roomSchema);
 async function addRoom(name, creator) {
   const room = new Room({ name, creator });
   try {
-    const savedRoom = await room.save();
-
-    return savedRoom;
+    return await room.save();
   } catch (err) {
-    console.log(err);
-    return { error: "Room already exists" }; //might have to change this if im saving even peer#peer rooms to allow people to connect again
+    console.log("Failed to add room", err);
   }
 }
 
@@ -44,32 +41,47 @@ async function getRoom(name) {
 }
 
 async function addUserToRoom(name, user) {
-  return await Room.findOneAndUpdate(
-    { name },
-    { $push: { users: user } },
-    { new: true }
-  );
+  try {
+    return await Room.findOneAndUpdate(
+      { name },
+      { $push: { users: user } },
+      { new: true }
+    );
+  } catch (err) {
+    console.log("Failed to add user to room", err);
+  }
 }
 
 async function removeUserFromRoom(name, user) {
-  return await Room.findOneAndUpdate(
-    { name },
-    { $pull: { users: { name: user.name } } },
-    { new: true }
-  );
+  try {
+    return await Room.findOneAndUpdate(
+      { name },
+      { $pull: { users: { name: user.name } } },
+      { new: true }
+    );
+  } catch (err) {
+    console.log("Failed to remove user from room", err);
+  }
 }
 
 async function addMessageToRoom(name, message) {
-  return await Room.findOneAndUpdate(
-    { name },
-    { $push: { messages: message } },
-    { new: true }
-  );
+  try {
+    return await Room.findOneAndUpdate(
+      { name },
+      { $push: { messages: message } },
+      { new: true }
+    );
+  } catch (err) {
+    console.log("Failed to add message to room", err);
+  }
 }
 
 async function deleteRoom(name) {
-  const deletedRoom = await Room.deleteOne({ name });
-  return deletedRoom;
+  try {
+    return await Room.deleteOne({ name });
+  } catch (err) {
+    console.log("Failed to delete room", err);
+  }
 }
 
 module.exports = {
