@@ -2,14 +2,12 @@ const mongoose = require("mongoose");
 const Joi = require("joi");
 const jwt = require("jsonwebtoken");
 const config = require("config");
+const { makeCommonRoomName } = require("./queue");
+const { getRoom } = require("./rooms");
 mongoose.set("useCreateIndex", true); //fix deprecation warning
 
 //create user schema
 const userSchema = new mongoose.Schema({
-  socketId: {
-    type: String,
-    default: "tbd",
-  },
   name: {
     type: String,
     default: "",
@@ -25,7 +23,18 @@ const userSchema = new mongoose.Schema({
     minlength: 8,
     maxLength: 1024,
   },
-  room: { type: String, default: "" },
+  friends: {
+    type: Array,
+    default: [],
+  },
+
+  rooms: {
+    type: Array,
+    default: [],
+  },
+  currentRoom: { type: String, default: "" },
+  usersMet: { type: Array, default: [] },
+  messagesSent: { type: Number, default: 0 },
 });
 
 //define method in user object
@@ -50,12 +59,38 @@ function validateUser(user) {
 //create User model
 const User = mongoose.model("User", userSchema);
 
+//add to users met
+async function addToUsersMet(name, human) {
+  try {
+    return await User.findOneAndUpdate(
+      { name },
+      { $addToSet: { usersMet: human } },
+      { new: true }
+    );
+  } catch (err) {
+    console.log("Failed to update number of users met", err);
+  }
+}
+
+//add to messages sent
+async function incrementMessagesSent(name) {
+  try {
+    return await User.findOneAndUpdate(
+      { name },
+      { $inc: { messagesSent: 1 } },
+      { new: true }
+    );
+  } catch (err) {
+    console.log("Failed to update number of messages sent", err);
+  }
+}
+
 //create new user
 async function addUser(name, password) {
   name = name.trim().toLowerCase();
 
   // else make a 'user' object and save it as a document in the db
-  const user = new User({ name, password, room: `#home/${name}` });
+  const user = new User({ name, password, currentRoom: `#home/${name}` });
   try {
     return await user.save();
   } catch (ex) {
@@ -64,31 +99,119 @@ async function addUser(name, password) {
 }
 
 // get user by socket id
-async function getUser(socketIdOrName) {
+async function getUser(userName) {
   try {
     return await User.findOne({
-      $or: [{ socketId: socketIdOrName }, { name: socketIdOrName }],
+      name: userName,
     });
   } catch (err) {
     console.log("Failed to get user", err);
   }
 }
 
-//update room name in existing user
-async function updateUserRoom(name, room) {
+//update currentRoom in existing user
+async function updateUserRoom(name, currentRoom) {
   try {
-    return await User.findOneAndUpdate({ name }, { room }, { new: true });
+    return await User.findOneAndUpdate(
+      { name },
+      { currentRoom },
+      { new: true }
+    );
   } catch (err) {
     console.log("Failed to update user's room", err);
   }
 }
 
-//update socket ID of user
-async function updateSocketId(name, socketId) {
+async function getUsersOnlineInRoom(roomName) {
   try {
-    return await User.findOneAndUpdate({ name }, { socketId }, { new: true });
+    const findResult = await User.find(
+      { currentRoom: roomName },
+      { name: 1, _id: 0 }
+    );
+
+    return findResult.map((result) => result.name);
   } catch (err) {
-    console.log("Failed to update user's socketId", err);
+    console.log("Failed to get online users in room", err);
+  }
+}
+
+//Get peer from room name for one-on-one chat
+function getPeerFromRoom(roomName, userName) {
+  const afterSlash = roomName.substring(roomName.indexOf("/") + 1);
+  const peerName = afterSlash.replace(userName, "").replace("#", "");
+  return peerName;
+}
+
+//add friends to users friends list
+async function addNewFriend(userName, friendName) {
+  try {
+    return await User.findOneAndUpdate(
+      { name: userName },
+      { $addToSet: { friends: friendName } },
+      { new: true }
+    );
+  } catch (err) {
+    console.log("Failed to add friend to friends list", err);
+  }
+}
+
+//add friends to users friends list
+async function removeFriend(userName, friendName) {
+  try {
+    return await User.findOneAndUpdate(
+      { name: userName },
+      { $pull: { friends: friendName } },
+      { new: true }
+    );
+  } catch (err) {
+    console.log("Failed to remove friend from friends list", err);
+  }
+}
+
+async function getFriendsAndMsgs(userName) {
+  try {
+    const user = await getUser(userName);
+
+    let friendsAndMsgs = await Promise.all(
+      user.friends.map(async (friend) => {
+        let room = await getRoom(makeCommonRoomName(userName, friend));
+        console.log(room.name);
+        let length = room.messages.length;
+        let newFriend = {
+          userName: friend,
+          lastMessage: length ? room.messages[length - 1].text : "...",
+        };
+        return newFriend;
+      })
+    );
+    return friendsAndMsgs;
+  } catch (ex) {
+    console.log("Failed to get friends and last messages:", ex);
+  }
+}
+
+//add room to users rooms list
+async function addRoomToUser(userName, roomName) {
+  try {
+    return await User.findOneAndUpdate(
+      { name: userName },
+      { $addToSet: { rooms: roomName } },
+      { new: true }
+    );
+  } catch (err) {
+    console.log("Failed to add room to user's rooms list", err);
+  }
+}
+
+async function removeRoomFromUser(userName, roomName) {
+  try {
+    return await User.findOneAndUpdate(
+      { name: userName },
+      { $pull: { rooms: roomName } },
+      { new: true }
+    );
+  } catch (err) {
+    console.log("Failed to remove room from user's rooms list", err);
   }
 }
 
@@ -107,5 +230,13 @@ module.exports = {
   updateUserRoom,
   deleteUser,
   validateUser,
-  updateSocketId,
+  addNewFriend,
+  removeFriend,
+  getPeerFromRoom,
+  addRoomToUser,
+  removeRoomFromUser,
+  getUsersOnlineInRoom,
+  getFriendsAndMsgs,
+  incrementMessagesSent,
+  addToUsersMet,
 };

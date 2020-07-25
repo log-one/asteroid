@@ -26,7 +26,10 @@ router.post("/", async (req, res) => {
   //pass payload and private key to generate jwt token
   const token = user.genAuthToken();
 
-  res.header("x-auth-token", token).send(user);
+  res
+    .header("x-auth-token", token)
+    .header("access-control-expose-headers", "x-auth-token")
+    .send(user);
 });
 
 module.exports = router;
