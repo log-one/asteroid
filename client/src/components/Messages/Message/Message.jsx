@@ -1,43 +1,57 @@
 import React from "react";
-import ReactEmoji from "react-emoji";
 
 import "./Message.css";
 
-const Message = ({ message: { user, text, link }, name }) => {
+const Message = ({ message: { user, text, link }, userName, chatState }) => {
   //logic which determines what kind of Message component is rendered
   let isSentByCurrentUser = false;
+  let isSentByAdmin = false;
 
-  if (user === name) {
-    isSentByCurrentUser = true;
-  }
+  if (user === userName) isSentByCurrentUser = true;
 
-  // if (msgLength !== -1) {
-  //   console.log("MESSAGES", msgLength);
-  //   return (
-  //     <div className="messageContainer justifyStart firstMessage">
-  //       <div className="messageBox backgroundLight">
-  //         <p className="messageText colorDark">{ReactEmoji.emojify(text)}</p>
-  //       </div>
-  //       <p className="sentText pl-10">{user}</p>
-  //     </div>
-  //   );
-  // }
+  if (user === "admin") isSentByAdmin = true;
 
   return isSentByCurrentUser ? (
     <div className="messageContainer justifyEnd">
       <p className="sentText pr-10">{user}</p>
-      <div className="messageBox backgroundBlue">
+      <div
+        className={`messageBox ${
+          chatState === "private-chat"
+            ? "backgroundBlue"
+            : chatState === "private-room"
+            ? "backgroundOrange"
+            : text === "#iloveyou"
+            ? "backgroundBlue"
+            : "backgroundGreen"
+        } `}
+      >
         <p className="messageText colorWhite">
-          {ReactEmoji.emojify(text)}
+          {text}
           {link ? <a href={link}>{" here's the full story."}</a> : null}
         </p>
       </div>
     </div>
   ) : (
     <div className="messageContainer justifyStart">
-      <div className="messageBox backgroundLight">
-        <p className="messageText colorDark">
-          {ReactEmoji.emojify(text)}
+      <div
+        className={`messageBox ${
+          isSentByAdmin
+            ? "backgroundAdmin"
+            : text === "#iloveyou"
+            ? "backgroundBlue"
+            : "backgroundLight"
+        }`}
+      >
+        <p
+          className={`messageText ${
+            isSentByAdmin
+              ? "colorDark"
+              : text === "#iloveyou"
+              ? "colorWhite"
+              : "colorDark"
+          }`}
+        >
+          {text}
           {link ? <a href={link}>{" here's the full story."}</a> : null}
         </p>
       </div>

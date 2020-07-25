@@ -1,69 +1,57 @@
 import React, { useState, useEffect } from "react";
-import io from "socket.io-client";
-import InfoBar from "../InfoBar/InfoBar";
-import SideBar from "../SideBar/SideBar";
+import { Link } from "react-router-dom";
 import UserData from "./UserData/UserData";
 import NavBar from "../NavBar/NavBar";
-import jwtDecode from "jwt-decode";
+import SideBar from "../SideBar/SideBar";
+
+import socket from "../../services/socketService";
+
+import { logout } from "../../services/authService";
 
 import "./Home.css";
-import helpIcon from "../../icons/helpIcon.svg";
+import HomeHelp from "../HomeHelp/HomeHelp";
 
-let socket;
 //the location prop comes from React-Router in App.js
-const Home = () => {
-  const [name, setName] = useState("");
-
-  const [sideBarOpen, setSideBarOpen] = useState(false);
-
-  const ENDPOINT = "localhost:5000";
+const Home = ({ userName, stats, onlineCount }) => {
+  const [showHelp, setShowHelp] = useState(false);
 
   useEffect(() => {
-    //create a socket object on the client side
-    socket = io(ENDPOINT); //emits a 'connection' event to ENDPOINT along with 'socket' object?
-    //this socket object is connected to the socket object on the server side through the endpoint URL
-  }, []);
+    socket.emit("/home", userName);
+  }, [userName]);
 
-  useEffect(() => {
-    const jwt = localStorage.getItem("token");
-    const { name: userName } = jwtDecode(jwt);
-
-    //if payload is successfully extracted from jwt, emit "join" event
-    if (userName) {
-      setName(userName.trim().toLowerCase());
-      socket.emit("join", userName);
-    }
-
-    //describe what needs to be done as the component unmounts
-    return () => {
-      socket.emit("disconnect");
-      socket.off();
-    };
-  }, [ENDPOINT]);
-
-  //function to toggle sidebar
-  const toggleSideBar = (event) => {
-    event.preventDefault();
-    setSideBarOpen(!sideBarOpen);
-  };
+  function toggleShowHelp() {
+    setShowHelp(!showHelp);
+  }
 
   return (
     <div className="outerContainer">
-      {console.log("RENDERED")}
       <div className="homeContainer">
-        <div className="titleBar">
-          <h1>hi {name}</h1>
-          <button className="helpButton">
-            <img className="helpIcon" src={helpIcon} alt="help icon" />
+        <SideBar
+          userName={userName}
+          sideBarOpen={showHelp}
+          toggleSideBar={toggleShowHelp}
+          ListComponent={HomeHelp}
+        />
+        <div className="titleBarHome">
+          <button className="hiButton" onClick={toggleShowHelp}>
+            hi {userName}
+          </button>
+
+          <button className="logoutButton" onClick={logout}>
+            log out
           </button>
         </div>
 
-        <UserData name={"vida"} numHumans={6} numMessages={235} />
+        <UserData stats={stats} />
 
-        <button className="findHumans">
-          <span>chat</span>
-        </button>
-        <p>2593 humans are searching for the perfect stranger...</p>
+        <Link to="/app/chat">
+          <button className="findHumans">
+            <span>chat</span>
+          </button>
+        </Link>
+        <p className="humansOnline">
+          {onlineCount + 1346} humans are searching for the perfect stranger...
+        </p>
         <NavBar pageName="home" />
       </div>
     </div>

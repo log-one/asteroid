@@ -1,9 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import http from "../../services/httpService";
 import * as authService from "../../services/authService";
-import { loginUrl, chatUrl } from "../../config.json";
-import { ToastContainer, toast } from "react-toastify";
 import Input from "../Input/Input";
 import Joi from "joi-browser";
 import "react-toastify/dist/ReactToastify.css";
@@ -53,23 +49,22 @@ const Login = ({ history }) => {
     setErrors(errorMessages);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const errors = validateSubmit();
     setErrors(errors);
 
     if (errors) return;
 
-    doSubmit();
+    await doSubmit();
   };
 
   const doSubmit = async () => {
     console.log("posting to server...");
     try {
-      const { headers } = await authService.login({ name: username, password });
-      const jwt = headers["x-auth-token"];
-      localStorage.setItem("token", jwt);
-      history.replace("/chat");
+      await authService.login({ name: username, password });
+      history.replace("/app");
+      //  window.location.reload(false);
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const newErrors = { ...errors };
@@ -100,7 +95,7 @@ const Login = ({ history }) => {
         />
 
         <button
-          onClick={(event) => handleSubmit(event)}
+          onClick={async (event) => await handleSubmit(event)}
           className="button mt-20"
           type="submit"
           // disabled={validateSubmit}

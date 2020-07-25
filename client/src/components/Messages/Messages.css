@@ -1,9 +1,18 @@
 .emptySpace {
   height: 4%;
+  width: 100%;
+  position: absolute;
+  background-color: black;
+  z-index: 6;
 }
 
 .emptySpace2 {
-  height: 6%;
+  height: 5%;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  background-color: black;
+  z-index: 6;
 }
 
 .messages {
@@ -12,7 +21,7 @@
   position: absolute;
   height: 100%;
   width: 100%;
-  padding-top: 10%;
-  padding-bottom: 10%;
+  padding-top: 18%;
+  padding-bottom: 18%;
   z-index: 5;
 }

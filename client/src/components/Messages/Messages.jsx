@@ -1,22 +1,35 @@
-import React from "react";
-import ScrollToBottom from "react-scroll-to-bottom";
+import React, { useRef, useEffect } from "react";
 import Message from "./Message/Message";
 
 import "./Messages.css";
 
-const Messages = ({ messages, name }) => {
-  const trimmedName = name.trim().toLowerCase();
+const Messages = ({ messages, userName, chatState }) => {
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current.scrollIntoView({ behaviour: "smooth" });
+  };
+
+  useEffect(scrollToBottom, [messages]);
 
   return (
-    <ScrollToBottom className="messages">
+    <React.Fragment>
       <div className="emptySpace"></div>
-      {messages.map((message, index) => (
-        <div key={index}>
-          <Message message={message} name={trimmedName} />
-        </div>
-      ))}
+      <div className="messages">
+        {messages.map((message, index) => (
+          <div key={index}>
+            <Message
+              message={message}
+              chatState={chatState}
+              userName={userName}
+            />
+          </div>
+        ))}
+
+        <div ref={messagesEndRef} />
+      </div>
       <div className="emptySpace2"></div>
-    </ScrollToBottom>
+    </React.Fragment>
   );
 };
 

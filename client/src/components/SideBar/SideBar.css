@@ -8,70 +8,17 @@
 }
 
 .side-bar {
-  background-color: rgba(0, 0, 0, 0.8);
-  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  max-width: 75%;
+  background: rgba(0, 0, 0);
   height: 100%;
-  width: 40%;
-  box-shadow: 3px 0px 5px #00000059;
-  border-bottom-right-radius: 60%;
-  border-top-right-radius: 30%;
-  position: relative;
-  z-index: 30;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  overflow-x: hidden;
-}
-
-.roomName {
-  color: #00ff808f;
-  font-size: 1.4em;
-  padding: 8% 10% 0% 10%;
-  background-color: rgba(255, 0, 242, 0);
-  border-bottom-right-radius: 10em;
-  border-bottom-left-radius: 10em;
-}
-
-.onlineList {
-  display: flex;
-  border-top-right-radius: 50%;
-  border-bottom-right-radius: 30%;
-}
-
-.dotContainer {
-  width: 25%;
-  cursor: pointer;
-  background-color: rgba(23, 0, 71, 0);
-  border-right: 3px solid rgba(255, 0, 191, 0);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: flex-start;
-  border-top-right-radius: 50em;
-  border-bottom-right-radius: 50em;
-  padding: 10% 0;
-}
-
-.sidebarDot {
-  height: 0.9em;
-  width: 0.9em;
-  background-color: #00ff808f;
-  border-radius: 50%;
-  margin: 0.75em 0 0.75em 45%;
-}
-
-.userNames {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  padding: 10% 0% 10% 7%;
-  border-radius: 2.5em;
-}
-
-.userNames p {
-  font-family: sans-serif;
-  font-size: 0.9em;
-  letter-spacing: 0.05em;
-  color: #d8d8d8a8;
-  margin: 0;
-  padding: 0;
+  position: relative;
+  z-index: 30;
+  border-top-right-radius: 0em;
+  border-bottom-right-radius: 50%;
+  box-shadow: 1em 0em 2em rgb(7, 7, 7);
+  padding-right: 8%;
 }

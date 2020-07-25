@@ -6,7 +6,7 @@
 
 .navBar button {
   display: flex column;
-  background-color: #e5e5e8;
+  background-color: #000;
   border: none;
 }
 
@@ -20,4 +20,5 @@
 
 .navBar img {
   width: 2.2em;
+  filter: invert(0.8);
 }

@@ -1,0 +1,130 @@
+.onlineList {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: 0 0 0 0;
+  overflow-y: scroll;
+}
+
+.onlineListItem {
+  display: flex;
+  position: relative;
+  justify-content: space-between;
+  padding: 0;
+  margin: 0 0 2em 0;
+  list-style: none;
+  height: 2em;
+  width: 100%;
+}
+
+.barHeading {
+  white-space: nowrap;
+  color: rgb(190, 190, 190);
+  padding: 0.2em 0.7em;
+  text-align: left;
+  font-size: large;
+}
+
+.roomMember {
+  height: 100%;
+  width: 2em;
+  text-align: left;
+  border: none;
+  background: #cb356b; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #f15f79,
+    #cb356b
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #f15f79,
+    #cb356b
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  letter-spacing: 0em;
+  border-top-right-radius: 20em;
+  border-bottom-right-radius: 20em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: medium;
+}
+
+.roomMemberWrapper {
+  display: flex;
+  position: relative;
+  justify-content: space-between;
+  padding: 0;
+  width: fit-content;
+  margin: 0 0 0 0;
+  list-style: none;
+  height: 100%;
+}
+
+.onlineListItem p {
+  display: flex;
+  align-items: center;
+  color: rgb(190, 190, 190);
+  margin: 0 1.2em;
+}
+
+.onlineState {
+  background: #11998e; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #0dcc86,
+    #11998e
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #0dcc86,
+    #11998e
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.deleteMemberButton {
+  padding: 0 0 0 5%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  vertical-align: middle;
+}
+
+.deleteMemberIcon {
+  filter: invert(0.8);
+  width: 2em;
+}
+
+.returnToRooms {
+  background: #cb356b; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #f15f79,
+    #cb356b
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #f15f79,
+    #cb356b
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  color: black;
+  font-size: 1em;
+  font-weight: bold;
+  border-top-right-radius: 10em;
+  border-bottom-right-radius: 10em;
+  border: none;
+  display: flex;
+  align-items: center;
+  padding: 1em 0;
+  margin-bottom: 15%;
+  width: 7em;
+}
+
+.returnIcon {
+  filter: invert(0);
+  transform: rotate(180deg);
+  margin: 0 7%;
+  width: 1.5em;
+}

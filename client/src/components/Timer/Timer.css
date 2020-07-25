@@ -1,25 +1,5 @@
-.timerBadge {
-  width: 5rem;
-  height: 45px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  border-bottom-left-radius: 50px;
-  border-top-left-radius: 80px;
-}
-
-.timerBadge p {
-  color: rgb(0, 0, 0);
-  padding: 0;
-  margin: 0;
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-  font-size: large;
-}
-
-.timerBadgeWarning {
-  background: transparent;
+.userTimerBadge {
+  background: transparent; /* fallback for old browsers */
 
   width: 5rem;
   height: 100%;
@@ -27,20 +7,57 @@
   justify-content: center;
   align-items: center;
 
-  border-bottom-left-radius: 50px;
-  border-bottom-right-radius: 80px;
+  border-bottom-left-radius: 50em;
+  border-bottom-right-radius: 80em;
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
+  z-index: 8;
 }
 
-.timerBadgeWarning p {
-  color: rgba(255, 6, 143, 0.7);
+.userTimerBadge p {
+  background: #cb356b; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to left, #8e54e9, #cb356b);
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to left,
+    #8e54e9,
+    #cb356b
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   padding: 0;
   margin: 0;
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-  font-size: 1.4em;
-  font-weight: bold;
+  font-size: 1.5em;
+  font-weight: 700;
   position: relative;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  right: 7%;
+}
+
+.peerTimerBadge {
+  background: transparent; /* fallback for old browsers */
+
+  width: 5rem;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-bottom-left-radius: 50em;
+  border-bottom-right-radius: 80em;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 8;
+}
+
+.peerTimerBadge p {
+  color: rgb(190, 190, 190);
+  padding: 0;
+  margin: 0;
+  font-size: 1.5em;
+  font-weight: 700;
+  position: relative;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   right: 7%;
 }

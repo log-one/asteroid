@@ -10,10 +10,12 @@
 }
 
 .messageText {
+  white-space: normal;
   letter-spacing: 0;
-  float: left;
   font-size: 1.05em;
   word-wrap: break-word;
+  overflow-wrap: break-word;
+  line-height: 1.2em;
 }
 
 .messageText img {
@@ -52,29 +54,81 @@
 }
 
 .colorDark {
-  color: #e7e7e7ce;
+  color: #888888;
 }
 
 .colorWhite {
-  color: #000000;
+  color: #000;
 }
 
 .colorDark a {
-  color: #00aeffc5;
+  color: #0096dbc5;
 }
 
 .colorWhite a {
   color: #00327c;
 }
 .backgroundLight {
-  background: rgba(0, 0, 0, 0.8);
+  background: #111111;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   border-bottom-left-radius: 20px;
 }
 
 .backgroundBlue {
-  background: rgba(255, 255, 255, 0.8); /* fallback for old browsers */
+  background: #01a1ce; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #8e54e9,
+    #01a1ce
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #8e54e9,
+    #01a1ce
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.backgroundAdmin {
+  background: #111111; /* fallback for old browsers */
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.backgroundGreen {
+  background: #cb356b; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to left,
+    #8e54e9,
+    #cb356b
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to left,
+    #8e54e9,
+    #cb356b
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.backgroundOrange {
+  background: #cb356b; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #f15f79,
+    #cb356b
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #f15f79,
+    #cb356b
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;

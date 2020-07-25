@@ -6,6 +6,13 @@
   background-color: #e5e5e8;
 }
 
+.titleBarRooms {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 5%;
+  color: rgb(190, 190, 190);
+}
+
 .roomContainer h2 {
   color: black;
   text-align: right;
@@ -24,8 +31,18 @@
   list-style-type: none;
   width: 50%;
   height: 0;
-  padding-bottom: 50%;
-  background-color: #e5e5e8;
+  padding-bottom: 35%;
+  background: #cb356b; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #f15f79,
+    #cb356b
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #f15f79,
+    #cb356b
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   margin-bottom: 6%;
   position: relative;
 }
@@ -44,8 +61,20 @@
 .roomButton {
   border: none;
   margin: 0;
-  background-color: #67acfa;
-  color: white;
+
+  background: #cb356b; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #f15f79,
+    #cb356b
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #f15f79,
+    #cb356b
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  color: black;
   font-weight: bold;
   font-size: large;
   text-align: center;
@@ -81,7 +110,18 @@
 }
 
 .createRoomItem {
-  background-color: #e9e9e9;
+  background: #8e9eab; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to left,
+    #eef2f3,
+    #8e9eab
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to left,
+    #eef2f3,
+    #8e9eab
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
   position: relative;
 }
 
@@ -89,21 +129,42 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  border-radius: 100%;
   border: none;
   text-align: center;
   font-weight: bold;
   font-size: large;
-  background-color: #67acfa;
+  background: transparent;
   text-decoration: none;
+  color: #111111;
+}
+
+.createRoomItem input:invalid {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.createRoomItem input::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: rgba(0, 0, 0, 0.801);
+  opacity: 1; /* Firefox */
 }
 
 .createRoom {
-  background-color: #ff707b;
+  background: #cb356b; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #f15f79,
+    #cb356b
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #f15f79,
+    #cb356b
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
   border: none;
   font-weight: bolder;
   font-size: xx-large;
-  color: #22031f;
+  color: black;
   padding: 0;
   width: 100%;
   height: 100%;
@@ -111,42 +172,64 @@
   position: absolute;
 }
 
-.createRoomReposition {
-  background-color: #ff707b;
-  border: none;
-  font-weight: bold;
-  font-size: xx-large;
-  color: #22031f;
-  padding: 0;
-  width: 45%;
-  height: 45%;
-  border-radius: 100%;
-  left: 50%;
-  top: 70%;
-  position: absolute;
-}
-
 .roomList li:nth-child(even) {
   margin: 0 0 0 50%;
-  border-top-left-radius: 100%;
-  border-bottom-left-radius: 100%;
-  background-color: #67acfa;
+  border-top-left-radius: 10em;
+  border-bottom-left-radius: 10em;
 }
 
 .roomList li:nth-child(even) button {
-  border-top-left-radius: 100%;
-  border-bottom-left-radius: 100%;
+  border-top-left-radius: 10em;
+  border-bottom-left-radius: 10em;
+}
+
+.roomList li:nth-child(even) input {
+  border-top-left-radius: 10em;
+  border-bottom-left-radius: 10em;
 }
 
 .roomList li:nth-child(odd) {
-  border-top-right-radius: 100%;
-  border-bottom-right-radius: 100%;
-  background-color: #67acfa;
+  border-top-right-radius: 10em;
+  border-bottom-right-radius: 10em;
 }
 
 .roomList li:nth-child(odd) button {
-  border-top-right-radius: 100%;
-  border-bottom-right-radius: 100%;
+  border-top-right-radius: 10em;
+  border-bottom-right-radius: 10em;
+}
+
+.roomList li:nth-child(odd) input {
+  border-top-right-radius: 10em;
+  border-bottom-right-radius: 10em;
+}
+
+.createRoomReposition {
+  background: #8e9eab; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to left,
+    #eef2f3,
+    #8e9eab
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to left,
+    #eef2f3,
+    #8e9eab
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  border: none;
+  font-weight: bold;
+  font-size: xx-large;
+  color: rgb(12, 12, 12);
+  padding: 0;
+  width: 2em;
+  height: 2em;
+  left: 50%;
+  top: 70%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20em;
 }
 
 .deleteButton {

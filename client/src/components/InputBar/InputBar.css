@@ -1,25 +1,29 @@
 .form {
-  height: 50px;
+  height: 7%;
   display: flex;
   justify-content: space-evenly;
   width: 100%;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0);
   position: relative;
   z-index: 7;
-  padding-bottom: 0%;
+  border-top-left-radius: 30%;
+  border-top-right-radius: 20%;
+  box-shadow: 1em 0 1em #111;
 }
 
 .input {
-  border-top-left-radius: 0em;
+  border-top-left-radius: 25%;
   border-bottom-right-radius: 0em;
   border-bottom-left-radius: 0px;
   padding: 0% 5%;
   width: 100%;
   font-size: 1.2em;
-  caret-color: rgb(255, 255, 255);
-  background-color: rgba(255, 255, 255, 0);
+  caret-color: white;
+  background-color: transparent;
   border: none;
+  color: white;
 }
 
 /* Need to fix this as well */
@@ -27,17 +31,17 @@ input:focus,
 textarea:focus,
 select:focus {
   outline: none;
-  color: rgba(255, 255, 255, 0.8);
+  color: white;
 }
 
-input:invalid {
+.input:invalid {
   background-color: rgba(0, 0, 0, 0.5);
   text-decoration: line-through;
 }
 
 ::placeholder {
   /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: rgba(230, 230, 230, 0.8);
+  color: rgb(216, 216, 216);
   opacity: 1; /* Firefox */
 }
 
@@ -54,27 +58,63 @@ input:invalid {
 .sendButton {
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-  color: #fff !important;
+
   text-transform: lowercase;
   font-size: large;
   cursor: pointer;
   text-decoration: none;
-  background-color: rgba(255, 255, 255, 0);
+  background-color: transparent;
   padding: 0px;
   border: none;
   width: 15%;
   border-bottom-left-radius: 0em;
   border-top-left-radius: 0em;
-  border-top-right-radius: 1.5em;
+  border-top-right-radius: 70%;
   height: 100%;
   position: relative;
 }
 
 .sendIcon {
   position: absolute;
+  filter: invert(1);
   top: 35%;
   left: 30%;
   max-width: 35%;
   opacity: 0.8;
-  filter: invert(1);
+}
+
+.chatOverButtons {
+  display: flex;
+  justify-content: center;
+  height: 7%;
+  z-index: 7;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top-left-radius: 30%;
+  border-top-right-radius: 20%;
+}
+
+.homeButton {
+  border: none;
+  background-color: #67acfa;
+  border-top-right-radius: 10em;
+  color: white;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  font-size: large;
+  padding: 1% 10% 0 5%;
+}
+.skipButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border: none;
+  background: transparent;
+  border-top-left-radius: 30%;
+  border-top-right-radius: 20%;
+  color: rgb(190, 190, 190);
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  font-size: 1.5em;
 }

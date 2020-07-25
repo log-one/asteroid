@@ -1,13 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Rooms.css";
-import deleteIcon from "../../icons/deleteIcon.svg";
 import NavBar from "../NavBar/NavBar";
+import socket from "../../services/socketService";
 
-const Rooms = () => {
-  const [rooms, setRooms] = useState([]);
+const Rooms = ({ userName, rooms, history }) => {
   const [createRoomState, setCreateRoomState] = useState("button");
   const [newRoom, setNewRoom] = useState("");
-  const [portals, setPortals] = useState([]);
+
+  useEffect(() => {
+    socket.emit("/rooms", userName);
+  }, [userName]);
+
+  //helper func to parse out creator name and room name
+  function parseRoomName(room) {
+    const parsedRoom = room.split("/");
+    return { creator: parsedRoom[1], roomName: parsedRoom[2] };
+  }
+
+  //helper func to create new room
+  function createNewRoom() {
+    const REGEXpattern = /(^([a-z0-9]+(?: [a-z0-9]+)*)$)/;
+
+    if (REGEXpattern.test(newRoom)) {
+      const trimmedNewRoom = newRoom.trim();
+      //emit event to add new room to database
+      socket.emit("#room/new", { userName, newRoom: trimmedNewRoom });
+    }
+
+    setCreateRoomState("button");
+    setNewRoom("");
+  }
 
   //helper function to render create room button
   function renderCreateRoom() {
@@ -17,6 +39,7 @@ const Rooms = () => {
           <input
             placeholder="enter room name"
             maxLength="12"
+            pattern="(^([a-z0-9]+(?: [a-z0-9]+)*)$)"
             onChange={(e) =>
               e.target.value
                 ? setNewRoom(e.target.value)
@@ -24,17 +47,9 @@ const Rooms = () => {
             }
             required={true}
           ></input>
-          <button
-            onClick={() => {
-              if (newRoom)
-                setRooms([...rooms, { name: newRoom, creator: "you!" }]);
-              setCreateRoomState("button");
-              setNewRoom("");
-            }}
-            className="createRoomReposition"
-          >
+          <div onClick={createNewRoom} className="createRoomReposition">
             +
-          </button>
+          </div>
         </li>
       );
     } else {
@@ -57,7 +72,7 @@ const Rooms = () => {
     <div className="outerContainer">
       {console.log("RENDERED")}
       <div className="homeContainer">
-        <div className="titleBar">
+        <div className="titleBarRooms">
           <h1>rooms</h1>
         </div>
 
@@ -65,15 +80,20 @@ const Rooms = () => {
           {rooms.map((room) => (
             <li>
               {/* <span className="numOnline">7</span> */}
-              <button className="roomButton">
-                <h3>{room.name}</h3>
+              <button
+                className="roomButton"
+                onClick={() =>
+                  history.push(
+                    `/app/rooms/${parseRoomName(room).creator}/${
+                      parseRoomName(room).roomName
+                    }`
+                  )
+                }
+              >
+                <h3>{parseRoomName(room).roomName}</h3>
                 <h5>by</h5>
-                <h5>{room.creator}</h5>
+                <h5>{parseRoomName(room).creator}</h5>
               </button>
-
-              {/* <button className="deleteButton">
-            <img src={deleteIcon} alt="delete icon" />
-          </button> */}
             </li>
           ))}
           {renderCreateRoom()}

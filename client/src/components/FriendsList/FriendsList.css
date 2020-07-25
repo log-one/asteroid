@@ -1,0 +1,72 @@
+.addFriendsList {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: 0 0 0 0;
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll;
+}
+
+.addFriendsListItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  height: 2em;
+  padding: 0;
+  width: 100%;
+  margin: 0 0 1em 0;
+  list-style: none;
+}
+
+.addFriendNameWrapper {
+  display: flex;
+  position: relative;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+  margin: 0 0 0 0;
+  list-style: none;
+  height: 100%;
+}
+
+.addFriendName {
+  height: 100%;
+  border: none;
+  background: #cb356b; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #f15f79,
+    #cb356b
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #f15f79,
+    #cb356b
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  letter-spacing: 0.1em;
+  border-top-right-radius: 20em;
+  border-bottom-right-radius: 20em;
+}
+
+.addFriendsListItem p {
+  display: flex;
+  align-items: center;
+  color: rgb(190, 190, 190);
+  margin: 0 1.2em;
+}
+
+.addFriend {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  border: none;
+  background: transparent;
+}
+
+.addFriendsIcon {
+  filter: invert(1);
+  width: 2em;
+}

@@ -2,20 +2,30 @@ import React from "react";
 import "./SideBar.css";
 import BackDrop from "./BackDrop/BackDrop";
 
-const SideBar = (props) => {
-  if (props.sideBarOpen)
+const SideBar = ({
+  ListComponent,
+  match,
+  addableFriends,
+  setAddableFriends,
+  roomMembers,
+  setRoomMembers,
+  sideBarOpen,
+  toggleSideBar,
+}) => {
+  if (sideBarOpen)
     return (
-      <div
-        className="side-bar-container"
-        onClick={(event) => props.toggleSideBar(event)}
-      >
-        <BackDrop />
+      <div className="side-bar-container">
+        <BackDrop toggleSideBar={toggleSideBar} />
 
+        {/* //a bookmark */}
         <div className="side-bar">
-          <div className="onlineList">
-            <div className="dotContainer"></div>
-            <div className="userNames"></div>
-          </div>
+          <ListComponent
+            roomMembers={roomMembers}
+            setRoomMembers={setRoomMembers}
+            addableFriends={addableFriends}
+            setAddableFriends={setAddableFriends}
+            match={match}
+          />
         </div>
       </div>
     );

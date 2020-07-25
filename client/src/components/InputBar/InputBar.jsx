@@ -1,25 +1,31 @@
 import React from "react";
 
+import socket from "../../services/socketService";
+
 import "./InputBar.css";
+
 import sendIcon from "../../icons/send.svg";
 
-const InputBar = ({ canSpeak, message, setMessage, sendMessage, pattern }) => {
-  if (canSpeak) {
+const InputBar = ({
+  userName,
+  chatState,
+
+  canSpeak,
+  message,
+  setMessage,
+  sendMessage,
+  history,
+}) => {
+  if (chatState === "random-chat-over") {
     return (
-      <form className="form">
-        <input
-          className="input"
-          type="text"
-          placeholder={`send a message`}
-          pattern={pattern}
-          value={message} //this makes the input field empty again when the 'message' state becomes an empty string every time a message is sent
-          onChange={(e) => setMessage(e.target.value)}
-          onKeyPress={(e) => (e.key === "Enter" ? sendMessage(e) : null)}
-        />
-        <div className="sendButton" onClick={(e) => sendMessage(e)}>
-          <img className="sendIcon" src={sendIcon} alt="send button icon" />
-        </div>
-      </form>
+      <div className="chatOverButtons">
+        <button
+          className="skipButton"
+          onClick={() => socket.emit("#skip", userName)}
+        >
+          skip
+        </button>
+      </div>
     );
   } else {
     return (
@@ -27,10 +33,14 @@ const InputBar = ({ canSpeak, message, setMessage, sendMessage, pattern }) => {
         <input
           className="input"
           type="text"
-          value=""
-          placeholder="await your turn..."
+          placeholder={canSpeak ? "send a message" : "await your turn..."}
+          disabled={!canSpeak}
+          pattern={
+            "(^[ a-z0-9]{1,100}$)|(^#news$)|(^#skip$)|(^#iloveyou$)|(^#destroy$)"
+          }
+          value={canSpeak ? message : ""} //this makes the input field empty again when the 'message' state becomes an empty string every time a message is sent
+          onChange={(e) => setMessage(e.target.value)}
           onKeyPress={(e) => (e.key === "Enter" ? sendMessage(e) : null)}
-          disabled
         />
         <div className="sendButton" onClick={(e) => sendMessage(e)}>
           <img className="sendIcon" src={sendIcon} alt="send button icon" />
