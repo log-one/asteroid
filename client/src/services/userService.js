@@ -1,10 +1,6 @@
 import http from "./httpService";
-import { chatUrl, registerUrl, loginUrl } from "../config.json";
+import { registerUrl } from "../config.json";
 
 export async function register(user) {
-  const response = await http.post(registerUrl, user);
-  console.log("RESPONSE", response);
-  return response;
+  return await http.post(registerUrl, user);
 }
-
-export function toChat() {}
