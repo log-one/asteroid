@@ -56,13 +56,7 @@ select:focus {
 }
 
 .sendButton {
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-
-  text-transform: lowercase;
-  font-size: large;
   cursor: pointer;
-  text-decoration: none;
   background-color: transparent;
   padding: 0px;
   border: none;
@@ -94,16 +88,6 @@ select:focus {
   border-top-right-radius: 20%;
 }
 
-.homeButton {
-  border: none;
-  background-color: #67acfa;
-  border-top-right-radius: 10em;
-  color: white;
-  font-weight: bold;
-  letter-spacing: 0.1em;
-  font-size: large;
-  padding: 1% 10% 0 5%;
-}
 .skipButton {
   display: flex;
   align-items: center;
@@ -116,5 +100,5 @@ select:focus {
   color: rgb(190, 190, 190);
   font-weight: bold;
   letter-spacing: 0.1em;
-  font-size: 1.5em;
+  font-size: 1.4em;
 }

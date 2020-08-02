@@ -12,8 +12,7 @@ const Friends = ({ userName, friends, history }) => {
 
   return (
     <div className="outerContainer">
-      {console.log("RENDERED FRIENDS")}
-      <div className="friendsContainer">
+      <div className="container">
         <div className="titleBarFriends">
           <h1>friends</h1>
         </div>
@@ -27,16 +26,18 @@ const Friends = ({ userName, friends, history }) => {
                     history.push(`/app/friends/${friend.userName}`)
                   }
                 >
-                  <h2>{friend.userName}</h2>
+                  <h3>{friend.userName}</h3>
                   <p>{friend.lastMessage}</p>
                 </button>
               </li>
             ))}
           </ul>
         ) : (
-          <h3>you have no friends</h3>
+          <div className="noFriendsWrapper">
+            <h3 className="noFriends">you have no friends</h3>
+          </div>
         )}
-        <NavBar />
+        <NavBar current="friends" />
       </div>
     </div>
   );

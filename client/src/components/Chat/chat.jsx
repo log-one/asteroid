@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 
-import InfoBar from "../InfoBar/InfoBar";
+import TopBar from "../TopBar/TopBar";
 import InputBar from "../InputBar/InputBar";
 import Messages from "../Messages/Messages";
 import SideBar from "../SideBar/SideBar";
 import FriendsList from "../FriendsList/FriendsList";
 import OnlineList from "../OnlineList/OnlineList";
-
 import socket from "../../services/socketService";
 
 import "./Chat.css";
@@ -15,7 +14,7 @@ import "./Chat.css";
 const Chat = ({ friends, userName, history, match, showTimer }) => {
   const [chatState, setChatState] = useState("");
   const [messages, setMessages] = useState([]); //array of all messages
-  const [infoBarText, setInfoBarText] = useState({ creator: "", roomName: "" });
+  const [topBarText, setTopBarText] = useState({ creator: "", roomName: "" });
   const [roomMembers, setRoomMembers] = useState([]);
   const [addableFriends, setAddableFriends] = useState([]);
   //above array of messages should be in a DB
@@ -72,27 +71,25 @@ const Chat = ({ friends, userName, history, match, showTimer }) => {
     // eslint-disable-next-line
   }, [userName]);
 
-  //set infobar details (room name and creator name)
+  //set topBar details (room name and creator name)
   useEffect(() => {
-    socket.on("infoBarText", (text) => {
-      setInfoBarText(text);
-      console.log("INFOBAR TEXT IS", text);
+    socket.on("topBarText", (text) => {
+      setTopBarText(text);
     });
 
-    console.log("INFOBAR TEXT ISSSSSSSSSSSSSS", infoBarText);
     if (
-      infoBarText.roomName &&
-      !infoBarText.creator &&
+      topBarText.roomName &&
+      !topBarText.creator &&
       (history.location.pathname === "/app/chat" ||
         history.location.pathname === "/app/chat/")
     )
       setChatState("random-chat-start");
 
     return () => {
-      socket.off("infoBarText");
+      socket.off("topBarText");
     };
     // eslint-disable-next-line
-  }, [infoBarText, userName]);
+  }, [topBarText, userName]);
 
   // listener to update room members on initial entry or when member is added/removed
   useEffect(() => {
@@ -148,7 +145,7 @@ const Chat = ({ friends, userName, history, match, showTimer }) => {
 
     //make user eligible to speak if most recent message was sent by peer in random chat state
 
-    if (chatState === "random-chat-start" && infoBarText.roomName) {
+    if (chatState === "random-chat-start" && topBarText.roomName) {
       if (messages.length > 0) {
         if (messages[messages.length - 1].user === userName) {
           console.log("the ifff", messages[messages.length - 1], canSpeak);
@@ -260,7 +257,6 @@ const Chat = ({ friends, userName, history, match, showTimer }) => {
       {console.log("RENDERED CHAT")}
       <div className="container">
         <SideBar
-          userName={userName}
           sideBarOpen={showOnlineList}
           toggleSideBar={toggleShowOnlineList}
           ListComponent={OnlineList}
@@ -270,7 +266,6 @@ const Chat = ({ friends, userName, history, match, showTimer }) => {
         />
 
         <SideBar
-          userName={userName}
           friends={friends}
           addableFriends={addableFriends}
           setAddableFriends={setAddableFriends}
@@ -280,7 +275,7 @@ const Chat = ({ friends, userName, history, match, showTimer }) => {
           match={match}
         />
 
-        <InfoBar
+        <TopBar
           showTimer={showTimer}
           timeLeft={timeLeft}
           name={userName}
@@ -288,7 +283,7 @@ const Chat = ({ friends, userName, history, match, showTimer }) => {
           toggleShowOnlineList={toggleShowOnlineList}
           toggleShowFriendsList={toggleShowFriendsList}
           messages={messages}
-          infoBarText={infoBarText}
+          topBarText={topBarText}
         />
 
         <Messages

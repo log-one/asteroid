@@ -12,7 +12,7 @@
 .messageText {
   white-space: normal;
   letter-spacing: 0;
-  font-size: 1.05em;
+  font-size: 1em;
   word-wrap: break-word;
   overflow-wrap: break-word;
   line-height: 1.2em;
@@ -29,11 +29,25 @@
   padding: 0 5%;
 }
 
+.adminEdge {
+}
+
+.senderEdge {
+}
+
 .sentText {
   display: flex;
   align-items: center;
   font-family: Helvetica;
-  color: #828282;
+  color: #a0a0a0;
+  letter-spacing: 0.3px;
+}
+
+.adminText {
+  display: flex;
+  align-items: center;
+  font-family: Helvetica;
+  color: #a0a0a0;
   letter-spacing: 0.3px;
 }
 
@@ -54,7 +68,11 @@
 }
 
 .colorDark {
-  color: #888888;
+  color: #adadad;
+}
+
+.colorAdmin {
+  color: #adadad;
 }
 
 .colorWhite {
@@ -69,7 +87,7 @@
   color: #00327c;
 }
 .backgroundLight {
-  background: #111111;
+  background: #111;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   border-bottom-left-radius: 20px;
@@ -94,7 +112,7 @@
 }
 
 .backgroundAdmin {
-  background: #111111; /* fallback for old browsers */
+  background: #111; /* fallback for old browsers */
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
@@ -121,12 +139,12 @@
   background: #cb356b; /* fallback for old browsers */
   background: -webkit-linear-gradient(
     to right,
-    #f15f79,
+    #01a1ce,
     #cb356b
   ); /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(
     to right,
-    #f15f79,
+    #01a1ce,
     #cb356b
   ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   border-top-left-radius: 20px;

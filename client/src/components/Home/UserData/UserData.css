@@ -1,14 +1,20 @@
 .userDataContainer {
-  padding: 5% 0 0 15%;
-  color: rgb(210, 210, 210);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: calc(50% - 100px);
+  color: #d2d2d2;
 }
 
 .userDataContainer div {
+  width: fit-content;
   display: flex;
-  padding: 3% 0;
-  letter-spacing: 0.1em;
+  padding: 3%;
+  margin: 0;
 }
 
 .userDataContainer img {
-  padding: 0 10% 0 5%;
+  padding-right: 1em;
+  filter: invert(1);
 }

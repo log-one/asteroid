@@ -5,7 +5,7 @@
   padding: 0 0 0 0;
   height: 100%;
   width: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .addFriendsListItem {
@@ -64,9 +64,10 @@
   height: 100%;
   border: none;
   background: transparent;
+  cursor: pointer;
 }
 
 .addFriendsIcon {
   filter: invert(1);
-  width: 2em;
+  width: 1.8em;
 }

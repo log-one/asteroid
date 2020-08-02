@@ -5,20 +5,19 @@
 }
 
 .navBar button {
-  display: flex column;
+  display: flex;
+  flex-direction: column;
   background-color: #000;
+  padding-bottom: 0.5em;
   border: none;
-}
-
-.navBar p {
-  padding: 0;
-  margin: 0;
-  font-size: smaller;
-  width: 100%;
-  letter-spacing: 0.1em;
+  cursor: pointer;
 }
 
 .navBar img {
   width: 2.2em;
   filter: invert(0.8);
+}
+
+.navBar .addShadow {
+  border-bottom: 0.1em dashed #ccc;
 }

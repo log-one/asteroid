@@ -73,12 +73,12 @@ async function findPeerForLoneSocket(socket) {
       peerSocket.emit("clear-messages");
       socket.emit("clear-messages");
 
-      //emit infoBar details to both clients
-      socket.emit("infoBarText", {
+      //emit topBar details to both clients
+      socket.emit("topBarText", {
         creator: "",
         roomName: peerSocket.userName,
       });
-      peerSocket.emit("infoBarText", {
+      peerSocket.emit("topBarText", {
         creator: "",
         roomName: socket.userName,
       });

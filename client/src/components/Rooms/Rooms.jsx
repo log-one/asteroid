@@ -53,14 +53,14 @@ const Rooms = ({ userName, rooms, history }) => {
         </li>
       );
     } else {
-      if (rooms.length < 4) {
+      if (rooms.length < 6) {
         return (
           <li className="createRoomItem">
             <button
               onClick={() => setCreateRoomState("textbox")}
               className="createRoom"
             >
-              +
+              <span className="plusText">+</span>
             </button>
           </li>
         );
@@ -71,7 +71,7 @@ const Rooms = ({ userName, rooms, history }) => {
   return (
     <div className="outerContainer">
       {console.log("RENDERED")}
-      <div className="homeContainer">
+      <div className="container">
         <div className="titleBarRooms">
           <h1>rooms</h1>
         </div>
@@ -79,7 +79,6 @@ const Rooms = ({ userName, rooms, history }) => {
         <ul className="roomList">
           {rooms.map((room) => (
             <li>
-              {/* <span className="numOnline">7</span> */}
               <button
                 className="roomButton"
                 onClick={() =>
@@ -98,7 +97,7 @@ const Rooms = ({ userName, rooms, history }) => {
           ))}
           {renderCreateRoom()}
         </ul>
-        <NavBar />
+        <NavBar current="rooms" />
       </div>
     </div>
   );

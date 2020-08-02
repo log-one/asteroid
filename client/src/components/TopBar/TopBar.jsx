@@ -5,35 +5,39 @@ import backIcon from "../../icons/backIcon.svg";
 
 import addToRoomIcon from "../../icons/addToRoomIcon.svg";
 
-import "./InfoBar.css";
+import "./TopBar.css";
 
 // onClick={(event) => props.toggleSideBar(event)}
 
-const InfoBar = ({
+const TopBar = ({
   showTimer,
-  infoBarText,
+  topBarText,
   timeLeft,
   canSpeak,
   toggleShowOnlineList,
   toggleShowFriendsList,
 }) => {
   return (
-    <div className="infoBar">
-      <button
+    <div className="topBar">
+      <div
         className={`leftContainer ${
-          infoBarText.creator ? "orangeBg" : showTimer ? "greenBg" : "blueBg"
+          topBarText.creator ? "orangeBg" : showTimer ? "greenBg" : "blueBg"
         }`}
-        onClick={(e) => toggleShowOnlineList(e)}
       >
         <button className="backButton" onClick={() => window.history.back()}>
           <img className="backIcon" src={backIcon} alt="back button" />
         </button>
 
-        {infoBarText.roomName}
-      </button>
+        <button
+          className="roomNameBar"
+          onClick={(e) => toggleShowOnlineList(e)}
+        >
+          {topBarText.roomName}
+        </button>
+      </div>
       {showTimer && <Timer timeLeft={timeLeft} canSpeak={canSpeak} />}
 
-      {infoBarText.creator && (
+      {topBarText.creator && (
         <button className="addToRoom" onClick={(e) => toggleShowFriendsList(e)}>
           <img
             className="addToRoomIcon"
@@ -46,4 +50,4 @@ const InfoBar = ({
   );
 };
 
-export default InfoBar;
+export default TopBar;

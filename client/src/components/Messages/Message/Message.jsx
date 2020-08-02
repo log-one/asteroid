@@ -32,7 +32,11 @@ const Message = ({ message: { user, text, link }, userName, chatState }) => {
       </div>
     </div>
   ) : (
-    <div className="messageContainer justifyStart">
+    <div
+      className={`messageContainer justifyStart ${
+        isSentByAdmin ? "adminEdge" : "senderEdge"
+      }`}
+    >
       <div
         className={`messageBox ${
           isSentByAdmin
@@ -45,7 +49,7 @@ const Message = ({ message: { user, text, link }, userName, chatState }) => {
         <p
           className={`messageText ${
             isSentByAdmin
-              ? "colorDark"
+              ? "colorAdmin"
               : text === "#iloveyou"
               ? "colorWhite"
               : "colorDark"

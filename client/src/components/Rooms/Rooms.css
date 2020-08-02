@@ -1,50 +1,22 @@
-.roomContainer {
-  display: flex column;
-  justify-content: space-between;
-  height: 100%;
-  width: 100%;
-  background-color: #e5e5e8;
-}
-
 .titleBarRooms {
-  display: flex;
-  justify-content: space-between;
   padding: 0 5%;
   color: rgb(190, 190, 190);
 }
 
-.roomContainer h2 {
-  color: black;
-  text-align: right;
-  padding-right: 10%;
-}
-
 .roomList {
-  display: flex column;
+  display: flex;
+  flex-direction: column;
   padding: 0;
-  height: 70%;
-  justify-content: space-evenly;
   overflow-y: auto;
+  flex-grow: 1;
+  margin: 1em 0 0 0;
 }
 
 .roomList li {
   list-style-type: none;
-  width: 50%;
-  height: 0;
-  padding-bottom: 35%;
-  background: #cb356b; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to right,
-    #f15f79,
-    #cb356b
-  ); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to right,
-    #f15f79,
-    #cb356b
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  margin-bottom: 6%;
-  position: relative;
+  display: flex;
+  margin: 1.1em 0;
+  width: 100%;
 }
 
 .numOnline {
@@ -59,128 +31,43 @@
 }
 
 .roomButton {
+  display: flex;
+  flex-direction: column;
   border: none;
+  max-width: 80%;
+  white-space: nowrap;
   margin: 0;
-
   background: #cb356b; /* fallback for old browsers */
   background: -webkit-linear-gradient(
     to right,
-    #f15f79,
+    #01a1ce,
     #cb356b
   ); /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(
     to right,
-    #f15f79,
+    #01a1ce,
     #cb356b
   ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
   color: black;
-  font-weight: bold;
-  font-size: large;
-  text-align: center;
-  padding: 0;
-  width: 100%;
-  height: 100%;
 
-  position: absolute;
-}
-
-.roomList li:nth-child(odd) .roomButton h3 {
-  margin: 0 0 5% 0;
-  padding: 10% 0 0 10%;
-  text-align: left;
-}
-
-.roomList li:nth-child(odd) .roomButton h5 {
-  margin: 0;
-  padding: 0 0 0 10%;
-  text-align: left;
-}
-
-.roomList li:nth-child(even) .roomButton h3 {
-  margin: 0 0 5% 0;
-  padding: 10% 10% 0 0;
-  text-align: right;
-}
-
-.roomList li:nth-child(even) .roomButton h5 {
-  margin: 0;
-  padding: 0 10% 0 0;
-  text-align: right;
-}
-
-.createRoomItem {
-  background: #8e9eab; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to left,
-    #eef2f3,
-    #8e9eab
-  ); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to left,
-    #eef2f3,
-    #8e9eab
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-  position: relative;
-}
-
-.createRoomItem input {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border: none;
-  text-align: center;
-  font-weight: bold;
-  font-size: large;
-  background: transparent;
-  text-decoration: none;
-  color: #111111;
-}
-
-.createRoomItem input:invalid {
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-.createRoomItem input::placeholder {
-  /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: rgba(0, 0, 0, 0.801);
-  opacity: 1; /* Firefox */
-}
-
-.createRoom {
-  background: #cb356b; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to right,
-    #f15f79,
-    #cb356b
-  ); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to right,
-    #f15f79,
-    #cb356b
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-  border: none;
-  font-weight: bolder;
-  font-size: xx-large;
-  color: black;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-
-  position: absolute;
+  padding: 2em 0;
 }
 
 .roomList li:nth-child(even) {
-  margin: 0 0 0 50%;
+  display: flex;
+  justify-content: flex-end;
   border-top-left-radius: 10em;
   border-bottom-left-radius: 10em;
 }
 
 .roomList li:nth-child(even) button {
+  align-items: flex-end;
   border-top-left-radius: 10em;
   border-bottom-left-radius: 10em;
+  padding-left: 4em;
+  padding-right: 2em;
+  cursor: pointer;
 }
 
 .roomList li:nth-child(even) input {
@@ -196,11 +83,105 @@
 .roomList li:nth-child(odd) button {
   border-top-right-radius: 10em;
   border-bottom-right-radius: 10em;
+  padding-left: 2em;
+  padding-right: 4em;
+  cursor: pointer;
 }
 
 .roomList li:nth-child(odd) input {
   border-top-right-radius: 10em;
   border-bottom-right-radius: 10em;
+}
+
+.roomList li:nth-child(odd) .roomButton h3 {
+  margin: 0 0 1em 0;
+  font-size: 1.3em;
+  letter-spacing: 0.1em;
+  padding: 0;
+  text-align: left;
+}
+
+.roomList li:nth-child(odd) .roomButton h5 {
+  margin: 0;
+  padding: 0;
+  font-size: 1em;
+  letter-spacing: 0.1em;
+  text-align: left;
+}
+
+.roomList li:nth-child(even) .roomButton h3 {
+  margin: 0 0 1em 0;
+  font-size: 1.3em;
+  letter-spacing: 0.1em;
+  padding: 0;
+  text-align: right;
+}
+
+.roomList li:nth-child(even) .roomButton h5 {
+  margin: 0;
+  padding: 0;
+  font-size: 1em;
+  letter-spacing: 0.1em;
+  text-align: right;
+}
+
+.createRoomItem {
+  width: 100%;
+  position: relative;
+  height: 123.45px;
+}
+
+.createRoomItem input {
+  height: 100%;
+  border: none;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1em;
+  background: #cb356b; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #01a1ce,
+    #cb356b
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #01a1ce,
+    #cb356b
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  text-decoration: none;
+  color: #111111;
+}
+
+.createRoomItem input:invalid {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.createRoomItem input::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: rgba(0, 0, 0, 0.801);
+  opacity: 1; /* Firefox */
+}
+
+.container .roomList li .createRoom {
+  background: #cb356b; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #01a1ce,
+    #cb356b
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #01a1ce,
+    #cb356b
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  border: none;
+  font-weight: bolder;
+  font-size: 2em;
+  color: black;
+  height: 100%;
+  padding: 0 1em;
 }
 
 .createRoomReposition {
@@ -218,30 +199,24 @@
 
   border: none;
   font-weight: bold;
-  font-size: xx-large;
+  font-size: 2em;
   color: rgb(12, 12, 12);
   padding: 0;
   width: 2em;
   height: 2em;
-  left: 50%;
-  top: 70%;
-  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 20em;
+  top: 3em;
 }
 
-.deleteButton {
-  border: none;
-  width: 15%;
-  height: 100%;
-  padding: 0;
-  margin: 0;
-  background-color: #67acfa;
+.roomList li:nth-child(odd) .createRoomReposition {
+  position: absolute;
+  left: 3em;
 }
 
-.deleteButton img {
-  filter: invert(100%);
-  -webkit-filter: invert(100%);
+.roomList li:nth-child(even) .createRoomReposition {
+  position: absolute;
+  right: 3em;
 }

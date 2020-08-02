@@ -25,7 +25,7 @@ const Home = ({ userName, stats, onlineCount }) => {
 
   return (
     <div className="outerContainer">
-      <div className="homeContainer">
+      <div className="container">
         <SideBar
           userName={userName}
           sideBarOpen={showHelp}
@@ -44,15 +44,18 @@ const Home = ({ userName, stats, onlineCount }) => {
 
         <UserData stats={stats} />
 
-        <Link to="/app/chat">
-          <button className="findHumans">
-            <span>chat</span>
-          </button>
-        </Link>
+        <div className="chatButtonWrapper">
+          <Link to="/app/chat">
+            <button className="findHumans">
+              <span>chat</span>
+            </button>
+          </Link>
+        </div>
+
         <p className="humansOnline">
-          {onlineCount + 1346} humans are searching for the perfect stranger...
+          {onlineCount + 1000} humans are searching for the perfect stranger...
         </p>
-        <NavBar pageName="home" />
+        <NavBar current="home" />
       </div>
     </div>
   );

@@ -192,8 +192,8 @@ io.on("connection", (socket) => {
       // join client socket to private room
       socket.join(room.name);
 
-      //emit infoBar details to client
-      socket.emit("infoBarText", {
+      //emit topBar details to client
+      socket.emit("topBarText", {
         creator: room.creator,
         roomName,
       });
@@ -424,7 +424,7 @@ io.on("connection", (socket) => {
     socket.join(`dm${roomName}`);
 
     //load room name into client's infobar
-    socket.emit("infoBarText", { creator: "", roomName: friend });
+    socket.emit("topBarText", { creator: "", roomName: friend });
 
     //load prev messages
     socket.emit("load-prev-messages", room.messages);

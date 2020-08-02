@@ -3,7 +3,8 @@
   flex-direction: column;
   position: relative;
   padding: 0 0 0 0;
-  overflow-y: scroll;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .onlineListItem {
@@ -22,7 +23,7 @@
   color: rgb(190, 190, 190);
   padding: 0.2em 0.7em;
   text-align: left;
-  font-size: large;
+  font-size: 1em;
 }
 
 .roomMember {
@@ -48,7 +49,7 @@
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  font-size: medium;
+  font-size: 1em;
 }
 
 .roomMemberWrapper {
@@ -67,6 +68,7 @@
   align-items: center;
   color: rgb(190, 190, 190);
   margin: 0 1.2em;
+  letter-spacing: 0.1em;
 }
 
 .onlineState {
@@ -89,11 +91,12 @@
   border: none;
   background: transparent;
   vertical-align: middle;
+  cursor: pointer;
 }
 
 .deleteMemberIcon {
   filter: invert(0.8);
-  width: 2em;
+  width: 1.8em;
 }
 
 .returnToRooms {
@@ -110,7 +113,6 @@
   ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
   color: black;
-  font-size: 1em;
   font-weight: bold;
   border-top-right-radius: 10em;
   border-bottom-right-radius: 10em;
