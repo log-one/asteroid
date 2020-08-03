@@ -89,7 +89,8 @@ const AppController = ({ userName, location, history }) => {
 
     //describe what needs to be done as the component unmounts
     return () => {
-      socket.emit("disconnect", userName);
+      //alert("DISCONNECTING", userName);
+      //  socket.emit("disconnect", userName);
       socket.off();
     };
 

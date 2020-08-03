@@ -1,8 +1,7 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import Register from "./components/Register/Register";
-import Login from "./components/Login/Login";
+import Landing from "./components/Landing/Landing";
 import AppController from "./components/AppController/AppController";
 
 import { getCurrentUser } from "./services/authService";
@@ -15,28 +14,7 @@ const App = () => {
 
   return (
     <React.Fragment>
-      {console.log("RENDERING APP")}
       <Switch>
-        <Route
-          path="/register"
-          render={(props) =>
-            userName ? (
-              <AppController userName={userName} {...props} />
-            ) : (
-              <Register {...props} />
-            )
-          }
-        />
-        <Route
-          path="/login"
-          render={(props) =>
-            userName ? (
-              <AppController userName={userName} {...props} />
-            ) : (
-              <Login {...props} />
-            )
-          }
-        />
         <ProtectedRoute path="/app" component={AppController} />
         <Route
           path="/"
@@ -44,7 +22,7 @@ const App = () => {
             userName ? (
               <AppController userName={userName} {...props} />
             ) : (
-              <Register {...props} />
+              <Landing {...props} />
             )
           }
         />

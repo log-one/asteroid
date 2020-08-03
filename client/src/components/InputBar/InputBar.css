@@ -31,7 +31,7 @@ input:focus,
 textarea:focus,
 select:focus {
   outline: none;
-  color: white;
+  color: black;
 }
 
 .input:invalid {
@@ -41,7 +41,7 @@ select:focus {
 
 ::placeholder {
   /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: rgb(216, 216, 216);
+  color: rgb(201, 201, 201);
   opacity: 1; /* Firefox */
 }
 

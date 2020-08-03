@@ -23,26 +23,37 @@ body {
 }
 
 .joinInnerContainer {
-  width: 20%;
+  width: 80%;
 }
 
-.heading {
+.joinInnerContainer .heading {
   color: white;
   font-size: 2.5em;
   padding-bottom: 10px;
   border-bottom: 2px solid white;
 }
 
-.button {
+.joinInnerContainer .button {
   color: #fff !important;
   text-transform: uppercase;
   text-decoration: none;
-  background: #2979ff;
+  background: #cb356b; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to left,
+    #8e54e9,
+    #cb356b
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to left,
+    #8e54e9,
+    #cb356b
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   padding: 20px;
-  border-radius: 5px;
+  border-radius: 10em;
   display: inline-block;
   border: none;
   width: 100%;
+  cursor: pointer;
 }
 
 .mt-20 {

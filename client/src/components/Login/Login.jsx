@@ -76,33 +76,30 @@ const Login = ({ history }) => {
 
   //describe the view
   return (
-    <div className="joinOuterContainer">
-      <div className="joinInnerContainer">
-        <h1 className="heading">Login</h1>
-        <Input
-          name="username"
-          placeholder="username"
-          type="text"
-          validateProperty={validateProperty}
-          errors={errors}
-        />
-        <Input
-          name="password"
-          placeholder="password"
-          type="password"
-          validateProperty={validateProperty}
-          errors={errors}
-        />
+    <div className="joinInnerContainer">
+      <Input
+        name="username"
+        placeholder="username"
+        type="text"
+        validateProperty={validateProperty}
+        errors={errors}
+      />
+      <Input
+        name="password"
+        placeholder="password"
+        type="password"
+        validateProperty={validateProperty}
+        errors={errors}
+      />
 
-        <button
-          onClick={async (event) => await handleSubmit(event)}
-          className="button mt-20"
-          type="submit"
-          // disabled={validateSubmit}
-        >
-          Login
-        </button>
-      </div>
+      <button
+        onClick={async (event) => await handleSubmit(event)}
+        className="button mt-20"
+        type="submit"
+        // disabled={validateSubmit}
+      >
+        Login
+      </button>
     </div>
   );
 };

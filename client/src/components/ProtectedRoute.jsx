@@ -42,7 +42,7 @@ const ProtectedRoute = ({ path, component: Component, render, ...rest }) => {
         return isAuth ? (
           <Component userName={user.trim().toLowerCase()} {...props} />
         ) : (
-          <Redirect to="/login" />
+          <Redirect to="/" />
         );
       }}
     />

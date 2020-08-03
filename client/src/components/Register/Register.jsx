@@ -96,39 +96,36 @@ const Register = ({ history }) => {
 
   //describe the view
   return (
-    <div className="joinOuterContainer">
-      <div className="joinInnerContainer">
-        <h1 className="heading">Register</h1>
-        <Input
-          name="username"
-          placeholder="username"
-          type="text"
-          validateProperty={validateProperty}
-          errors={errors}
-        />
-        <Input
-          name="password"
-          placeholder="password"
-          type="password"
-          validateProperty={validateProperty}
-          errors={errors}
-        />
-        <Input
-          name="confirmPassword"
-          placeholder="confirm password"
-          type="password"
-          validateProperty={validateProperty}
-          errors={errors}
-        />
-        <button
-          onClick={async (event) => await handleSubmit(event)}
-          className="button mt-20"
-          type="submit"
-          // disabled={validateSubmit}
-        >
-          Register
-        </button>
-      </div>
+    <div className="joinInnerContainer">
+      <Input
+        name="username"
+        placeholder="username"
+        type="text"
+        validateProperty={validateProperty}
+        errors={errors}
+      />
+      <Input
+        name="password"
+        placeholder="password"
+        type="password"
+        validateProperty={validateProperty}
+        errors={errors}
+      />
+      <Input
+        name="confirmPassword"
+        placeholder="confirm password"
+        type="password"
+        validateProperty={validateProperty}
+        errors={errors}
+      />
+      <button
+        onClick={async (event) => await handleSubmit(event)}
+        className="button mt-20"
+        type="submit"
+        // disabled={validateSubmit}
+      >
+        Register
+      </button>
     </div>
   );
 };
