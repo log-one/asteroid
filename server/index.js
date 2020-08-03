@@ -4,6 +4,7 @@ const socketio = require("socket.io");
 const mongoose = require("mongoose");
 const config = require("config");
 const http = require("http");
+const cors = require("cors");
 
 const PORT = process.env.PORT || 5000;
 
@@ -17,6 +18,9 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server); //create instance of socket.io server
 const got = require("got");
+
+//allow CORS
+app.use(cors());
 
 const {
   getUser,
