@@ -8,6 +8,10 @@ mongoose.set("useCreateIndex", true); //fix deprecation warning
 
 //create user schema
 const userSchema = new mongoose.Schema({
+  socketId: {
+    type: String,
+  },
+
   name: {
     type: String,
     default: "",

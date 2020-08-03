@@ -814,8 +814,9 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", async (userName) => {
     try {
-      const user = await getUser(userName);
-
+      console.log(userName);
+      const user = await updateUserRoom(userName, "offline");
+      console.log(user);
       //update total online for all connected sockets
       const onlineCount = io.engine.clientsCount;
       //emit latest online count to all connected client sockets when new client joins
