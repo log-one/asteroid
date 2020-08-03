@@ -1,6 +1,6 @@
 import io from "socket.io-client";
 
-const ENDPOINT = "localhost:5000";
+const ENDPOINT = "https://elgemo.herokuapp.com/";
 
 let socket = io(ENDPOINT);
 
