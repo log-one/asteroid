@@ -1,3 +1,4 @@
 {
-  "jwtPrivateKey": "chit_jwtPrivateKey"
+  "jwtPrivateKey": "chit_jwtPrivateKey",
+  "db": "chit_db"
 }

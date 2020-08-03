@@ -11,6 +11,8 @@ const register = require("./routes/register");
 const login = require("./routes/login");
 const chitApp = require("./routes/chitApp");
 
+const prod = require("./prod");
+
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server); //create instance of socket.io server
@@ -51,6 +53,8 @@ app.use("/register", register);
 app.use("/login", login);
 app.use("/app", chitApp); //protected route
 
+prod(app); //run production middleware;
+
 //log error if jwt private key not found in server environment variable
 if (!config.get("jwtPrivateKey")) {
   console.error("FATAL ERROR: jwtPrivateKey not found.");
@@ -59,7 +63,7 @@ if (!config.get("jwtPrivateKey")) {
 
 //connect to db
 mongoose
-  .connect("mongodb://localhost:27017/chit", {
+  .connect(config.get("db"), {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
