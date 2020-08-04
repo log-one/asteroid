@@ -21,7 +21,7 @@ const HomeHelp = () => {
           type <span>#skip</span> to skip to the next human.
         </li>
         <li>
-          type <span>#iloveyou</span> to invite a stranger to be your friend.
+          type <span>#ilikeyou</span> to invite a stranger to be your friend.
         </li>
         <li>
           type <span>#news</span> to send the summary of a random recent news

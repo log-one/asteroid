@@ -438,23 +438,23 @@ io.on("connection", (socket) => {
     socket.emit("load-prev-messages", room.messages);
   });
 
-  //listener for when user tries to befriend someone by saying #iloveyou
-  socket.on("#iloveyou", async ({ userName, lastMessage }) => {
+  //listener for when user tries to befriend someone by saying #ilikeyou
+  socket.on("#ilikeyou", async ({ userName, lastMessage }) => {
     //get user document
     let user = await getUser(userName);
     //get peer name from room name
     let peerName = getPeerFromRoom(user.currentRoom, user.name);
 
-    //emit #iloveyou message to room
+    //emit #ilikeyou message to room
     io.in(user.currentRoom).emit("message", {
       user: `${user.name}`,
-      text: `#iloveyou`,
+      text: `#ilikeyou`,
     });
 
     //update home screen messagesSent stat for user
     await incrementMessagesSent(user.name);
 
-    //if #iloveyou was said immediately after peer said it, and they are not already friends, form the union and pronounce them friends
+    //if #ilikeyou was said immediately after peer said it, and they are not already friends, form the union and pronounce them friends
     if (
       lastMessage.text === "say it back right now to form a true friendship" &&
       lastMessage.user === "admin" &&
@@ -487,7 +487,7 @@ io.on("connection", (socket) => {
         text: `you are both already friends, so that was cute`,
       });
     } else {
-      //if this is first user to say #iloveyou and extend an invitation to be friends
+      //if this is first user to say #ilikeyou and extend an invitation to be friends
       //emit hint message to peer
       socket.broadcast.to(user.currentRoom).emit("message", {
         user: "admin",
@@ -809,7 +809,7 @@ io.on("connection", (socket) => {
         //Need to kick user out as well. INCOMPLETE
       } //to do something after the message is sent
 
-      //if client does not say #iloveyou immediately after peer says it...
+      //if client does not say #ilikeyou immediately after peer says it...
       lastMessage.text === "say it back right now to form a true friendship" &&
       lastMessage.user === "admin"
         ? io.in(user.currentRoom).emit("message", {
