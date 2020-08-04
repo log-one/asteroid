@@ -27,7 +27,11 @@ const Message = ({ message: { user, text, link }, userName, chatState }) => {
       >
         <p className="messageText colorWhite">
           {text}
-          {link ? <a href={link}>{" here's the full story."}</a> : null}
+          {link ? (
+            <a href={link} target="_blank" rel="noopener noreferrer">
+              {" here's the full story."}
+            </a>
+          ) : null}
         </p>
       </div>
     </div>
@@ -56,7 +60,11 @@ const Message = ({ message: { user, text, link }, userName, chatState }) => {
           }`}
         >
           {text}
-          {link ? <a href={link}>{" here's the full story."}</a> : null}
+          {link ? (
+            <a href={link} target="_blank" rel="noopener noreferrer">
+              {" here's the full story."}
+            </a>
+          ) : null}
         </p>
       </div>
       <p className="sentText pl-10">{user}</p>

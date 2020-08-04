@@ -13,6 +13,7 @@ const roomSchema = new mongoose.Schema({
     {
       user: String,
       text: String,
+      link: String,
     },
   ],
 });
