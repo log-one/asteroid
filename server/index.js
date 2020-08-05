@@ -750,75 +750,85 @@ io.on("connection", (socket) => {
   });
 
   //listener to handle messages sent by a client
-  socket.on("sendMessage", async ({ message: text, userName, lastMessage }) => {
-    //get user document
-    const user = await getUser(userName);
-    if (user) {
-      //if user exists...
+  socket.on(
+    "sendMessage",
+    async ({ message: text, userName, lastMessage, chatState }) => {
+      //get user document
+      const user = await getUser(userName);
+      if (user) {
+        //if user exists...
 
-      //define accepted message syntax in regex
-      const messageREGEX = /(^[ a-z0-9]{1,100}$)/;
+        //define accepted message syntax in regex
+        const messageREGEX =
+          chatState.slice(0, 7) === "private"
+            ? /(^[ a-zA-Z0-9.~!@#$%^&*()_+-=?,]{1,100}$)|(^#news$)|(^#ily$)|(^#destroy$)/
+            : /(^[ a-zA-Z]{1,100}$)|(^#news$)|(^#skip$)|(^#ily$)|(^#destroy$)/;
 
-      if (messageREGEX.test(text)) {
-        //if message passes regex pattern test...
-        io.in(user.currentRoom).emit("message", { user: user.name, text });
+        if (messageREGEX.test(text)) {
+          //if message passes regex pattern test...
+          io.in(user.currentRoom).emit("message", { user: user.name, text });
 
-        //update home screen stats for user
-        await incrementMessagesSent(user.name);
-      } else if (text === "#news") {
-        //if user requests random news article using #news command...
-        //api url
-        const url =
-          "http://newsapi.org/v2/top-headlines?" +
-          "country=us&" +
-          "apiKey=7497229e6962478397096e360ead41e2";
+          //update home screen stats for user
+          await incrementMessagesSent(user.name);
+        } else if (text === "#news") {
+          //if user requests random news article using #news command...
+          //api url
+          const url =
+            "http://newsapi.org/v2/top-headlines?" +
+            "country=us&" +
+            "apiKey=7497229e6962478397096e360ead41e2";
 
-        (async () => {
-          try {
-            //send apit get request
-            const response = await got(url);
-            //parse response body
-            const newsArticles = JSON.parse(response.body).articles;
+          (async () => {
+            try {
+              //send apit get request
+              const response = await got(url);
+              //parse response body
+              const newsArticles = JSON.parse(response.body).articles;
 
-            //pick a random news article
-            const randomNewsArticle =
-              newsArticles[Math.floor(Math.random() * newsArticles.length)];
+              //pick a random news article
+              const randomNewsArticle =
+                newsArticles[Math.floor(Math.random() * newsArticles.length)];
 
-            //emit news article to clients
-            text = `#news: ${randomNewsArticle.description.toLowerCase()}`;
-            const link = randomNewsArticle.url;
-            io.in(user.currentRoom).emit("message", {
-              user: user.name,
-              text,
-              link,
-            });
+              //emit news article to clients
+              text = `#news: ${randomNewsArticle.description.toLowerCase()}`;
+              const link = randomNewsArticle.url;
+              io.in(user.currentRoom).emit("message", {
+                user: user.name,
+                text,
+                link,
+              });
 
-            //update home screen stats for user
-            await incrementMessagesSent(user.name);
-            // => '<!doctype html> ...'
-          } catch (error) {
-            text = "i tried to get a random news article but failed.";
-            io.in(user.currentRoom).emit("message", { user: user.name, text });
-            // => 'Internal server error ...'
-          }
-        })();
-      } else {
-        text = "i apologize for trying to break the rules.";
-        io.in(user.currentRoom).emit("message", { user: user.name, text });
-        await incrementMessagesSent(user.name);
-        //Need to kick user out as well. INCOMPLETE
-      } //to do something after the message is sent
+              //update home screen stats for user
+              await incrementMessagesSent(user.name);
+              // => '<!doctype html> ...'
+            } catch (error) {
+              text = "i tried to get a random news article but failed.";
+              io.in(user.currentRoom).emit("message", {
+                user: user.name,
+                text,
+              });
+              // => 'Internal server error ...'
+            }
+          })();
+        } else {
+          text = "i apologize for trying to break the rules.";
+          io.in(user.currentRoom).emit("message", { user: user.name, text });
+          await incrementMessagesSent(user.name);
+          //Need to kick user out as well. INCOMPLETE
+        } //to do something after the message is sent
 
-      //if client does not say #ily immediately after peer says it...
-      lastMessage.text === "say it back right now to form a true friendship" &&
-      lastMessage.user === "admin"
-        ? io.in(user.currentRoom).emit("message", {
-            user: "admin",
-            text: `perhaps this friendship will be forged another time.`,
-          })
-        : null;
+        //if client does not say #ily immediately after peer says it...
+        lastMessage.text ===
+          "say it back right now to form a true friendship" &&
+        lastMessage.user === "admin"
+          ? io.in(user.currentRoom).emit("message", {
+              user: "admin",
+              text: `perhaps this friendship will be forged another time.`,
+            })
+          : null;
+      }
     }
-  });
+  );
 
   socket.on("disconnect", async (userName) => {
     try {

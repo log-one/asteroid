@@ -11,6 +11,11 @@ const Rooms = ({ userName, rooms, history }) => {
     socket.emit("/rooms", userName);
   }, [userName]);
 
+  //effect to reset new room name to empty string
+  useEffect(() => {
+    setNewRoom("");
+  }, [createRoomState]);
+
   //helper func to parse out creator name and room name
   function parseRoomName(room) {
     const parsedRoom = room.split("/");
@@ -19,7 +24,7 @@ const Rooms = ({ userName, rooms, history }) => {
 
   //helper func to create new room
   function createNewRoom() {
-    const REGEXpattern = /(^([a-z0-9]+(?: [a-z0-9]+)*)$)/;
+    const REGEXpattern = /(^([a-zA-Z0-9]+(?: [a-zA-Z0-9]+)*)$)/;
 
     if (REGEXpattern.test(newRoom)) {
       const trimmedNewRoom = newRoom.trim();
@@ -39,10 +44,11 @@ const Rooms = ({ userName, rooms, history }) => {
           <input
             placeholder="enter room name"
             maxLength="12"
-            pattern="(^([a-z0-9]+(?: [a-z0-9]+)*)$)"
+            pattern="(^([a-zA-Z0-9]+(?: [a-zA-Z0-9]+)*)$)"
+            value={newRoom}
             onChange={(e) =>
               e.target.value
-                ? setNewRoom(e.target.value)
+                ? setNewRoom(e.target.value.toLowerCase())
                 : setCreateRoomState("button")
             }
             required={true}

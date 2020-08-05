@@ -36,10 +36,12 @@ const InputBar = ({
           placeholder={canSpeak ? "send a message" : "await your turn..."}
           disabled={!canSpeak}
           pattern={
-            "(^[ a-z0-9]{1,100}$)|(^#news$)|(^#skip$)|(^#ily$)|(^#destroy$)"
+            chatState.slice(0, 7) === "private"
+              ? "(^[ a-zA-Z0-9.~!@#$%^&*()_+-=?,]{1,100}$)|(^#news$)|(^#skip$)|(^#ily$)|(^#destroy$)"
+              : "(^[ a-zA-Z]{1,100}$)|(^#news$)|(^#skip$)|(^#ily$)|(^#destroy$)"
           }
           value={canSpeak ? message : ""} //this makes the input field empty again when the 'message' state becomes an empty string every time a message is sent
-          onChange={(e) => setMessage(e.target.value)}
+          onChange={(e) => setMessage(e.target.value.toLowerCase())}
           onKeyPress={(e) => (e.key === "Enter" ? sendMessage(e) : null)}
         />
         <div className="sendButton" onClick={(e) => sendMessage(e)}>

@@ -244,6 +244,7 @@ const Chat = ({ friends, userName, history, match, showTimer }) => {
           message,
           userName,
           lastMessage: messages[messages.length - 1],
+          chatState,
         });
 
         setMessage("");

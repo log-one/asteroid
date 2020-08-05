@@ -8,11 +8,16 @@ const HomeHelp = () => {
 
       <ul className="features">
         <li>use the chat button to be randomly matched with a stranger.</li>
-        <li>chat is turn-based.</li>
-        <li>send messages before the timer runs out.</li>
+        <li>random chat is turn-based and timed.</li>
         <li>all past conversations are saved.</li>
-        <li>only text commands, lowercase letters and numbers are allowed.</li>
-        <li>chat with friends anytime.</li>
+        <li>
+          to save time, only text commands and alphabets are allowed in random
+          chat.
+        </li>
+        <li>
+          but you may chat with friends at any time, with no timer, no turns and
+          no restrictions.
+        </li>
         <li>create rooms and add friends to them.</li>
       </ul>
       <h3>text commands</h3>
