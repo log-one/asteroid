@@ -224,11 +224,11 @@ const Chat = ({ friends, userName, history, match, showTimer }) => {
         socket.emit("#skip", userName);
         setMessage("");
       } else if (
-        message === "#ilikeyou" &&
+        message === "#ily" &&
         !match.params.friend &&
         !match.params.room
       ) {
-        socket.emit("#ilikeyou", {
+        socket.emit("#ily", {
           userName,
           lastMessage: messages[messages.length - 1],
         });

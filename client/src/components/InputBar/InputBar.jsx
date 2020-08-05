@@ -36,7 +36,7 @@ const InputBar = ({
           placeholder={canSpeak ? "send a message" : "await your turn..."}
           disabled={!canSpeak}
           pattern={
-            "(^[ a-z0-9]{1,100}$)|(^#news$)|(^#skip$)|(^#ilikeyou$)|(^#destroy$)"
+            "(^[ a-z0-9]{1,100}$)|(^#news$)|(^#skip$)|(^#ily$)|(^#destroy$)"
           }
           value={canSpeak ? message : ""} //this makes the input field empty again when the 'message' state becomes an empty string every time a message is sent
           onChange={(e) => setMessage(e.target.value)}

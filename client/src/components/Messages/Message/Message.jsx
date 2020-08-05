@@ -20,7 +20,7 @@ const Message = ({ message: { user, text, link }, userName, chatState }) => {
             ? "backgroundBlue"
             : chatState === "private-room"
             ? "backgroundOrange"
-            : text === "#ilikeyou"
+            : text === "#ily"
             ? "backgroundBlue"
             : "backgroundGreen"
         } `}
@@ -45,7 +45,7 @@ const Message = ({ message: { user, text, link }, userName, chatState }) => {
         className={`messageBox ${
           isSentByAdmin
             ? "backgroundAdmin"
-            : text === "#ilikeyou"
+            : text === "#ily"
             ? "backgroundBlue"
             : "backgroundLight"
         }`}
@@ -54,7 +54,7 @@ const Message = ({ message: { user, text, link }, userName, chatState }) => {
           className={`messageText ${
             isSentByAdmin
               ? "colorAdmin"
-              : text === "#ilikeyou"
+              : text === "#ily"
               ? "colorWhite"
               : "colorDark"
           }`}
