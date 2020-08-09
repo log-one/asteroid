@@ -4,6 +4,7 @@ const socketio = require("socket.io");
 const mongoose = require("mongoose");
 const config = require("config");
 const http = require("http");
+const jwt = require("jsonwebtoken");
 const cors = require("cors");
 
 const PORT = process.env.PORT || 5000;
@@ -32,6 +33,7 @@ const {
   removeRoomFromUser,
   getFriendsAndMsgs,
   incrementMessagesSent,
+  updateSocketId,
 } = require("./users.js");
 
 const {
@@ -72,11 +74,24 @@ mongoose
     useUnifiedTopology: true,
     useFindAndModify: false,
   })
-  .catch((err) => console.log("Failed to connect to MongoDB...", err))
-  .then(() => console.log("Connected to MongoDB..."));
+  .then(() => console.log("Connected to MongoDB..."))
+  .catch((err) => console.log("Failed to connect to MongoDB...", err));
 
-//listener for when client socket connects to server
-io.on("connection", (socket) => {
+//socket io middleware right before socket connects
+io.use(async function (socket, next) {
+  try {
+    const decoded = jwt.verify(
+      socket.handshake.query.token,
+      config.get("jwtPrivateKey")
+    );
+    const user = await updateSocketId(decoded.name, socket.id);
+    console.log("middleware", user);
+    next();
+  } catch (ex) {
+    console.log("FUCKITY FUCK");
+    next(new Error("Authentication error")); // sent to client
+  }
+}).on("connection", (socket) => {
   //declare useful variables
   let ip = socket.handshake.address;
 
@@ -832,38 +847,41 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", async (userName) => {
     try {
-      console.log(userName);
-      const user = await updateUserRoom(userName, "offline");
-      console.log(user);
-      //update total online for all connected sockets
-      const onlineCount = io.engine.clientsCount;
-      //emit latest online count to all connected client sockets when new client joins
-      io.emit("online-count", onlineCount);
+      if (userName) {
+        console.log(userName);
 
-      //check if user entered rooms screen from a private room
-      if (user.currentRoom.slice(0, 6) === "#room/") {
-        const roomMembers = await getUpdatedRoomMembers(
-          user.currentRoom,
-          user.name
-        );
+        const user = await updateUserRoom(userName, "offline");
+        console.log(user);
+        //update total online for all connected sockets
+        const onlineCount = io.engine.clientsCount;
+        //emit latest online count to all connected client sockets when new client joins
+        io.emit("online-count", onlineCount);
 
-        //emit room members with updated online statuses to all clients in previous private room
-        io.in(user.currentRoom).emit("load-room-members", roomMembers);
-        //reload client's rooms in case client was deleted from private room
-        socket.emit("load-rooms", user.rooms);
-      }
+        //check if user entered rooms screen from a private room
+        if (user.currentRoom.slice(0, 6) === "#room/") {
+          const roomMembers = await getUpdatedRoomMembers(
+            user.currentRoom,
+            user.name
+          );
 
-      //check if user entered rooms screen from random chat
-      else if (user.currentRoom.slice(0, 6) === "#chat/") {
-        io.in(user.currentRoom).emit("message", {
-          user: "admin",
-          text: `${user.name} has left the website...`,
-        });
+          //emit room members with updated online statuses to all clients in previous private room
+          io.in(user.currentRoom).emit("load-room-members", roomMembers);
+          //reload client's rooms in case client was deleted from private room
+          socket.emit("load-rooms", user.rooms);
+        }
 
-        io.in(user.currentRoom).emit("message", {
-          user: "",
-          text: "you may return home or skip to find another human",
-        });
+        //check if user entered rooms screen from random chat
+        else if (user.currentRoom.slice(0, 6) === "#chat/") {
+          io.in(user.currentRoom).emit("message", {
+            user: "admin",
+            text: `${user.name} has left the website...`,
+          });
+
+          io.in(user.currentRoom).emit("message", {
+            user: "",
+            text: "you may return home or skip to find another human",
+          });
+        }
       }
     } catch {
       return Error("Unexpected error during disconnect.");
