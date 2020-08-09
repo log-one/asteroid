@@ -10,6 +10,7 @@ mongoose.set("useCreateIndex", true); //fix deprecation warning
 const userSchema = new mongoose.Schema({
   socketId: {
     type: String,
+    default: "",
   },
 
   name: {
@@ -102,14 +103,23 @@ async function addUser(name, password) {
   }
 }
 
-// get user by socket id
-async function getUser(userName) {
+// get user by userName or socketId
+async function getUser(nameOrId) {
   try {
     return await User.findOne({
-      name: userName,
+      $or: [{ name: nameOrId }, { socketId: nameOrId }],
     });
   } catch (err) {
     console.log("Failed to get user", err);
+  }
+}
+
+// update users socketId in db
+async function updateSocketId(name, socketId) {
+  try {
+    return await User.findOneAndUpdate({ name }, { socketId }, { new: true });
+  } catch (err) {
+    console.log("Failed to update user's socketId", err);
   }
 }
 
@@ -232,6 +242,7 @@ module.exports = {
   addUser,
   getUser,
   updateUserRoom,
+  updateSocketId,
   deleteUser,
   validateUser,
   addNewFriend,
