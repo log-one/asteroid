@@ -83,8 +83,8 @@ const Register = ({ history }) => {
       });
       loginWithJwt(headers["x-auth-token"]);
 
-      history.replace("/app"); //use window.location("/app") to do full reload of application
-      //window.location.reload(false);
+      //history.replace("/app"); //use window.location("/app") to do full reload of application
+      window.location.reload(false);
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const newErrors = { ...errors };

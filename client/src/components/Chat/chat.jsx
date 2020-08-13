@@ -131,6 +131,7 @@ const Chat = ({ friends, userName, history, match, showTimer }) => {
         message.text === "searching for the perfect human..."
       )
         setChatState("in-queue");
+      setCanSpeak(true);
     });
 
     //event listener to clear messages
@@ -143,12 +144,11 @@ const Chat = ({ friends, userName, history, match, showTimer }) => {
       setMessages(oldMessages);
     });
 
-    //make user eligible to speak if most recent message was sent by peer in random chat state
+    //make user eligible to speak if most recent message was sent by peer in random-chat-start state
 
     if (chatState === "random-chat-start" && topBarText.roomName) {
       if (messages.length > 0) {
         if (messages[messages.length - 1].user === userName) {
-          console.log("the ifff", messages[messages.length - 1], canSpeak);
           setCanSpeak(false);
         } else if (
           messages[messages.length - 1].user &&
@@ -156,12 +156,7 @@ const Chat = ({ friends, userName, history, match, showTimer }) => {
         ) {
           console.log(messages[messages.length - 1], canSpeak);
           setCanSpeak(true);
-        } else
-          console.log(
-            "wut in the act fick",
-            messages[messages.length - 1],
-            canSpeak
-          );
+        }
       }
     }
 
@@ -255,7 +250,6 @@ const Chat = ({ friends, userName, history, match, showTimer }) => {
   //and then add a bunch of components/JSX below to render a proper looking Chat component
   return (
     <div className="outerContainer">
-      {console.log("RENDERED CHAT")}
       <div className="container">
         <SideBar
           sideBarOpen={showOnlineList}

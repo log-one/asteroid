@@ -1,9 +1,12 @@
 import io from "socket.io-client";
-import { getCurrentUser, getJwt } from "./authService";
+import { getJwt, validateJwt } from "./authService";
 
 const token = getJwt();
+const tokenIsValid = validateJwt(token);
 const ENDPOINT = process.env.REACT_APP_CHIT_URL;
 
-let socket = io.connect(ENDPOINT, { query: { token } });
+let socket = io.connect(ENDPOINT, {
+  query: { token: tokenIsValid ? token : "invalid" },
+});
 
 export default socket;
