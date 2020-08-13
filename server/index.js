@@ -856,7 +856,7 @@ io.use(async function (socket, next) {
       let user = await getUser(socket.id);
       //update total online for all connected sockets
       const onlineCount = io.engine.clientsCount;
-      //emit latest online count to all connected client sockets when new client joins
+      //emit latest online count to all connected client sockets when new client leaves
       io.emit("online-count", onlineCount);
 
       //check if user entered rooms screen from a private room
