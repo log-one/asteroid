@@ -124,10 +124,12 @@ async function updateSocketId(name, socketId) {
 }
 
 //update currentRoom in existing user
-async function updateUserRoom(name, currentRoom) {
+async function updateUserRoom(nameOrId, currentRoom) {
   try {
     return await User.findOneAndUpdate(
-      { name },
+      {
+        $or: [{ name: nameOrId }, { socketId: nameOrId }],
+      },
       { currentRoom },
       { new: true }
     );
