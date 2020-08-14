@@ -11,19 +11,31 @@ const NavBar = ({ current }) => {
   return (
     <div className="navBar">
       <Link to="/app/rooms">
-        <button className={current === "rooms" ? "addShadow" : ""}>
-          <img src={roomIcon} alt="rooms nav icon"></img>
+        <button>
+          <img
+            src={roomIcon}
+            alt="rooms nav icon"
+            className={current === "rooms" ? "addShadow" : ""}
+          ></img>
         </button>
       </Link>
 
       <Link to="/app/home">
-        <button className={current === "home" ? "addShadow" : ""}>
-          <img src={homeIcon} alt="home nav icon"></img>
+        <button>
+          <img
+            src={homeIcon}
+            alt="home nav icon"
+            className={current === "home" ? "addShadow" : ""}
+          ></img>
         </button>
       </Link>
       <Link to="/app/friends">
-        <button className={current === "friends" ? "addShadow" : ""}>
-          <img src={friendIcon} alt="friends nav icon"></img>
+        <button>
+          <img
+            src={friendIcon}
+            alt="friends nav icon"
+            className={current === "friends" ? "addShadow" : ""}
+          ></img>
         </button>
       </Link>
     </div>
