@@ -19,11 +19,7 @@ const App = () => {
         <Route
           path="/"
           render={(props) =>
-            userName ? (
-              <AppController userName={userName} {...props} />
-            ) : (
-              <Landing {...props} />
-            )
+            userName ? window.location.replace("/app") : <Landing {...props} />
           }
         />
       </Switch>

@@ -18,8 +18,8 @@ const Friends = ({ userName, friends, history }) => {
         </div>
         {friends.length !== 0 ? (
           <ul className="friendsList">
-            {friends.map((friend) => (
-              <li className="friendsListItem">
+            {friends.map((friend, index) => (
+              <li className="friendsListItem" key={index}>
                 <button
                   className="dmButton"
                   onClick={() =>

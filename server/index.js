@@ -82,11 +82,12 @@ mongoose
 //socket io middleware right before socket connects
 io.use(async function (socket, next) {
   try {
-    if (socket.handshake.query.token === "invalid")
-      throw new Exception("Invalid token");
+    const decoded = jwt.verify(
+      socket.handshake.query.token,
+      config.get("jwtPrivateKey")
+    );
 
-    const decoded = jwt.decode(socket.handshake.query.token);
-    const user = await updateSocketId(decoded.name, socket.id);
+    await updateSocketId(decoded.name, socket.id);
 
     next();
   } catch (ex) {

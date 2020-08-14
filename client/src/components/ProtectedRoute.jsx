@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Route, Redirect } from "react-router-dom";
 
-import { getCurrentUser, validateJwt } from "../services/authService";
+import {
+  getCurrentUser,
+  validateJwt,
+  deleteJwt,
+} from "../services/authService";
 
 const ProtectedRoute = ({ path, component: Component, render, ...rest }) => {
   const [user, setUser] = useState("");
@@ -39,11 +43,12 @@ const ProtectedRoute = ({ path, component: Component, render, ...rest }) => {
       path={path}
       {...rest}
       render={(props) => {
-        return isAuth ? (
-          <Component userName={user.trim().toLowerCase()} {...props} />
-        ) : (
-          <Redirect to="/" />
-        );
+        if (isAuth)
+          return <Component userName={user.trim().toLowerCase()} {...props} />;
+        else {
+          deleteJwt();
+          return <Redirect to="/" />;
+        }
       }}
     />
   );

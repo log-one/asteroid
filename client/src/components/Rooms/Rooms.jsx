@@ -83,8 +83,8 @@ const Rooms = ({ userName, rooms, history }) => {
         </div>
 
         <ul className="roomList">
-          {rooms.map((room) => (
-            <li>
+          {rooms.map((room, index) => (
+            <li key={index}>
               <button
                 className="roomButton"
                 onClick={() =>

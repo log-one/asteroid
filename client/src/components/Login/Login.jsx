@@ -63,7 +63,7 @@ const Login = ({ history }) => {
     console.log("posting to server...");
     try {
       await authService.login({ name: username, password });
-      //history.replace("/app");
+      // history.replace("/app");
       window.location.reload(false);
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {

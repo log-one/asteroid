@@ -55,3 +55,7 @@ export function logout() {
   localStorage.removeItem(tokenKey);
   window.location.reload();
 }
+
+export function deleteJwt() {
+  localStorage.removeItem(tokenKey);
+}
