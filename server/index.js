@@ -771,6 +771,48 @@ io.use(async function (socket, next) {
     }
   });
 
+  socket.on("#news", async () => {
+    console.log("getting the news...");
+    //if user requests random news article using #news command...
+    //api url
+    const url =
+      "http://newsapi.org/v2/top-headlines?" +
+      "country=us&" +
+      "apiKey=7497229e6962478397096e360ead41e2";
+
+    const user = await getUser(socket.id);
+    try {
+      //send apit get request
+      const response = await got(url);
+      //parse response body
+      const newsArticles = JSON.parse(response.body).articles;
+
+      //pick a random news article
+      const randomNewsArticle =
+        newsArticles[Math.floor(Math.random() * newsArticles.length)];
+
+      //emit news article to clients
+      let text = `#news: ${randomNewsArticle.description.toLowerCase()}`;
+      const link = randomNewsArticle.url;
+      io.in(user.currentRoom).emit("message", {
+        user: user.name,
+        text,
+        link,
+      });
+
+      //update home screen stats for user
+      await incrementMessagesSent(user.name);
+      // => '<!doctype html> ...'
+    } catch (error) {
+      let text = "i tried to get a random news article but failed.";
+      io.in(user.currentRoom).emit("message", {
+        user: user.name,
+        text,
+      });
+      // => 'Internal server error ...'
+    }
+  });
+
   //listener to handle messages sent by a client
   socket.on(
     "sendMessage",
@@ -792,52 +834,11 @@ io.use(async function (socket, next) {
 
           //update home screen stats for user
           await incrementMessagesSent(user.name);
-        } else if (text === "#news") {
-          //if user requests random news article using #news command...
-          //api url
-          const url =
-            "http://newsapi.org/v2/top-headlines?" +
-            "country=us&" +
-            "apiKey=7497229e6962478397096e360ead41e2";
-
-          (async () => {
-            try {
-              //send apit get request
-              const response = await got(url);
-              //parse response body
-              const newsArticles = JSON.parse(response.body).articles;
-
-              //pick a random news article
-              const randomNewsArticle =
-                newsArticles[Math.floor(Math.random() * newsArticles.length)];
-
-              //emit news article to clients
-              text = `#news: ${randomNewsArticle.description.toLowerCase()}`;
-              const link = randomNewsArticle.url;
-              io.in(user.currentRoom).emit("message", {
-                user: user.name,
-                text,
-                link,
-              });
-
-              //update home screen stats for user
-              await incrementMessagesSent(user.name);
-              // => '<!doctype html> ...'
-            } catch (error) {
-              text = "i tried to get a random news article but failed.";
-              io.in(user.currentRoom).emit("message", {
-                user: user.name,
-                text,
-              });
-              // => 'Internal server error ...'
-            }
-          })();
         } else {
           text = "i apologize for trying to break the rules.";
           io.in(user.currentRoom).emit("message", { user: user.name, text });
           await incrementMessagesSent(user.name);
-          //Need to kick user out as well. INCOMPLETE
-        } //to do something after the message is sent
+        }
 
         //if client does not say #ily immediately after peer says it...
         lastMessage.text ===
