@@ -234,6 +234,11 @@ const Chat = ({ friends, userName, history, match, showTimer }) => {
           pathName: history.location.pathname,
         });
         setMessage("");
+      } else if (message === "#news") {
+        socket.emit("#news", {
+          userName,
+        });
+        setMessage("");
       } else {
         socket.emit("sendMessage", {
           message,

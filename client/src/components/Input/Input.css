@@ -11,6 +11,11 @@
   opacity: 1; /* Firefox */
 }
 
+.joinInput:focus {
+  color: black;
+  outline: none;
+}
+
 .mt-20 {
   margin-top: 20px;
 }

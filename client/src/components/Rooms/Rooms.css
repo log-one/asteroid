@@ -157,6 +157,10 @@
   background-color: rgba(0, 0, 0, 0.5);
 }
 
+.createRoomItem input:focus {
+  color: rgba(0, 0, 0);
+}
+
 .createRoomItem input::placeholder {
   /* Chrome, Firefox, Opera, Safari 10.1+ */
   color: rgba(0, 0, 0, 0.801);
