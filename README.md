@@ -1,4 +1,4 @@
-# chit
+# asteroid
 
 **_Note: This project is still in progress._**
 
@@ -22,10 +22,12 @@ _Note: This is not the final version. I'm just experimenting with the UI design.
 
 ### Features:
 
-Chit is a chat environment with certain rules, tools and an interesting aesthetic. Strangers are sent to a chat room and given the opportunity to have a conversation in this environment which includes features like:
+Asteroid is chat application based on the same basic premise as existing services like Omegle and OmeTV - connect randomly with strangers from around the world.
 
-- Users speak according to a turn-based system. After sending a message the user must sit back and wait for the other user to speak before they can speak again.
-- There is a window of time within which a user must send a message when it is their turn to speak. When the built-in timer reaches zero, they miss their turn to speak.
-- If a user times out 3 times, they get kicked out of the room for inactivity and their IP address is temporarily banned.
-- For the sake of brevity and a consistent aesthetic, there are limitations to the size and type of the message content.
-- Users may use tools such as the #news command to help spark a conversation. #news returns the latest news from NewsAPI. A few more interesting commands will be added soon.
+- Users in random chat speak according to a turn-based system. After sending a message the user must sit back and wait for the other user to speak before they can speak again.
+- There is a window of time within which a user must send a message when it is their turn to speak. When the timer reaches zero, they are returned to their home screen.
+- If two users in random chat successively send the command #ily to each other, they become friends and gain the ability to remain in touch outside the limitations of random chat through the "friends" screen.
+- The #destroy command can be used to destroy a friendship. Doing so will remove the friend from each others' "friends" screen, but all the messages are still saved in the server. So, if the two individuals were to meet again in random chat, they would be able to see all their previous messages, pick up where they left off and perhaps become friends again.
+- Using the #destroy command as the creator in a room in the "rooms" screen however, will kick everyone out of the room, destroy it and delete all it's messages from the server.
+- For the sake of brevity and a consistent aesthetic, there are limitations to the size and type of the message content. To reduce timeouts and encourage succinctness, no punctuation or special characters are allowed in random chat.
+- Users may use tools such as the #news command to help spark a conversation. Sending the #news command returns the summary of a randomly picked recent news article from NewsAPI. A few more interesting commands will be added soon.
