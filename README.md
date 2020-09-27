@@ -11,9 +11,11 @@
 - Socket.io
 - NewsAPI
 
-### Screenshot:
+### Screenshots:
 
-![](chit-updated.png)
+![](main_asteroid.png)
+
+![](features_asteroid.png)
 _Note: This is not the final version._
 
 ### Features:
