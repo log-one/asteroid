@@ -5,7 +5,7 @@
 ### Try it:
 
 - Please use the "Add To Home Screen" feature of your browser for the best experience if you are going to visit the site on a mobile device. The final product will be a PWA.
-- The best way to use it would be to use two different browsers or devices (or using a normal tab and an incognito tab on a single browser) to visit, register and then hit the chat button on www.asteroid.chat
+- If you are the only person online (very likely), the best way to use it would be to use two different browsers or devices (or using a normal tab and an incognito tab on a single browser) to visit, register and then hit the chat button on www.asteroid.chat
 
 ### Building Blocks
 
